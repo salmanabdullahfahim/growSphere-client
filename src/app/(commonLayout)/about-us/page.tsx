@@ -9,7 +9,7 @@ const AboutUsPage = () => {
           <div className="col-span-12 lg:col-span-6">
             <div className="z-[1] flex justify-center items-center relative h-full w-full">
               <svg
-                className="absolute -top[20%] -left-[10%] -z-[1] text-green-500"
+                className="absolute -top[20%] left-[1%] -z-[1] text-green-500"
                 viewBox="0 0 180 180"
               >
                 <path
