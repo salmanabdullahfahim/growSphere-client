@@ -5,15 +5,17 @@ const Logo = () => {
   return (
     <Link
       href="/"
-      className="text-2xl md:text-3xl font-semibold cursor-pointer duration-200 flex items-center italic gap-x-3"
+      className="text-2xl md:text-[1.7rem] font-semibold cursor-pointer duration-200 flex items-center italic gap-x-3"
     >
       <Image
         src="https://res.cloudinary.com/doq34sr4q/image/upload/v1727678488/logo_uspvfb.png"
         alt="Logo"
-        width={70}
-        height={70}
+        width={50}
+        height={50}
       />
-      Grow<span className="text-md text-green-500">Sphere</span>
+      <p className="text-md">
+        Grow<span className=" text-green-500">Sphere</span>
+      </p>
     </Link>
   );
 };
