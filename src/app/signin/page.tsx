@@ -2,51 +2,24 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import {
-  ArrowRight,
-  Mail,
-  Lock,
-  User,
-  Phone,
-  Image as ImageIcon,
-} from "lucide-react";
-
+import { ArrowRight, Mail, Lock } from "lucide-react";
 import Image from "next/image";
-
 import Link from "next/link";
 import Logo from "@/components/Navbar/Logo";
 
-const SignUpForm = () => {
+const SignInForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const onSubmit = async (data: any) => {
+  // @ts-ignore
+  const onSubmit = async (data) => {
     console.log(data);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-12">
-      <div className="w-full relative mb-6">
-        <input
-          type="text"
-          className="bg-transparent border-b border-black focus:outline-none focus:border-green-600 text-sm w-full py-2"
-          placeholder="Name"
-          {...register("name", { required: "Name is required" })}
-        />
-        <User
-          className="absolute top-1/2 -translate-y-1/2 right-2 opacity-80"
-          size={18}
-        />
-        {errors.name && (
-          <span className="text-red-500 text-xs">
-            {errors.name.message as string}
-          </span>
-        )}
-      </div>
-
       <div className="w-full relative mb-6">
         <input
           type="email"
@@ -89,50 +62,19 @@ const SignUpForm = () => {
         )}
       </div>
 
-      <div className="w-full relative mb-6">
-        <input
-          type="tel"
-          className="bg-transparent border-b border-black focus:outline-none focus:border-green-600 text-sm w-full py-2"
-          placeholder="Phone Number"
-          {...register("phone", { required: "Phone number is required" })}
-        />
-        <Phone
-          className="absolute top-1/2 -translate-y-1/2 right-2 opacity-80"
-          size={18}
-        />
-        {errors.phone && (
-          <span className="text-red-500 text-xs">
-            {errors.phone.message?.toString()}
-          </span>
-        )}
-      </div>
-
-      <div className="w-full relative mb-6">
-        <input
-          type="file"
-          accept="image/*"
-          className="bg-transparent border-b border-black focus:outline-none focus:border-green-600 text-sm w-full py-2"
-          {...register("profileImage")}
-        />
-        <ImageIcon
-          className="absolute top-1/2 -translate-y-1/2 right-2 opacity-80"
-          size={18}
-        />
-      </div>
-
       <button
         type="submit"
         className="bg-green-500 py-4 px-10 text-white hover:bg-opacity-95 duration-300 mt-4 flex items-center rounded-md font-semibold"
       >
-        Create Account <ArrowRight className="ml-2" size={18} />
+        Sign In <ArrowRight className="ml-2" size={18} />
       </button>
     </form>
   );
 };
 
-const SignUp15 = () => {
+const SignIn15 = () => {
   return (
-    <section className="ezy__signup15 light flex items-center justify-center py-14 md:py-24 bg-white text-black text-opacity-90 overflow-hidden">
+    <section className="ezy__signin15 light flex items-center justify-center py-14 md:py-24 bg-white text-black text-opacity-90 overflow-hidden">
       <div className="container px-4 mx-auto">
         <div className="flex justify-center">
           <div className="w-full md:w-2/3">
@@ -147,13 +89,13 @@ const SignUp15 = () => {
                       height={300}
                     />
                     <div className="text-center mt-12">
-                      Already have an account?
+                      Don't have an account?
                       <Link
-                        href="/signin"
+                        href="/signup"
                         className="underline hover:text-green-600 duration-300"
                       >
                         {" "}
-                        Sign In
+                        Sign Up
                       </Link>
                     </div>
                   </div>
@@ -162,9 +104,9 @@ const SignUp15 = () => {
                   <div className="flex flex-col h-full p-2 lg:p-6 xl:p-12">
                     <Logo />
                     <h2 className="my-6 text-xl font-semibold">
-                      Sign Up to create account
+                      Sign In to your account
                     </h2>
-                    <SignUpForm />
+                    <SignInForm />
                   </div>
                 </div>
               </div>
@@ -176,6 +118,6 @@ const SignUp15 = () => {
   );
 };
 
-export default function SignUpPage() {
-  return <SignUp15 />;
+export default function SignInPage() {
+  return <SignIn15 />;
 }
