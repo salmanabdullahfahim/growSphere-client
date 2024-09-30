@@ -14,7 +14,7 @@ const Logo = () => {
         height={50}
       />
       <p className="text-md">
-        Grow<span className=" text-green-500">Sphere</span>
+        Grow<span className=" text-green-600">Sphere</span>
       </p>
     </Link>
   );
