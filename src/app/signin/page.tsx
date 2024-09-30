@@ -6,15 +6,16 @@ import { ArrowRight, Mail, Lock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/Navbar/Logo";
+import { SignInUser } from "@/types/types";
 
 const SignInForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-  // @ts-ignore
-  const onSubmit = async (data) => {
+  } = useForm<SignInUser>();
+
+  const onSubmit = async (data: SignInUser) => {
     console.log(data);
   };
 
@@ -89,7 +90,7 @@ const SignIn15 = () => {
                       height={300}
                     />
                     <div className="text-center mt-12">
-                      Don't have an account?
+                      Don&apos;t have an account?
                       <Link
                         href="/signup"
                         className="underline hover:text-green-600 duration-300"
