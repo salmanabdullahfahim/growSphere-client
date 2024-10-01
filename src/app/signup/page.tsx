@@ -15,6 +15,7 @@ import Image from "next/image";
 
 import Link from "next/link";
 import Logo from "@/components/Navbar/Logo";
+import nexiosInstance from "@/config/nexios.config";
 
 const SignUpForm = () => {
   const {
@@ -25,6 +26,12 @@ const SignUpForm = () => {
 
   const onSubmit = async (data: any) => {
     console.log(data);
+    const response = await nexiosInstance.post("/auth/signup", {
+      ...data,
+      profileImage:
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+    });
+    console.log(response.data);
   };
 
   return (
