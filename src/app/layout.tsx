@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Progressbar from "@/utils/ProgressBar";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "GrowSphere",
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Progressbar>{children}</Progressbar>
+        <Toaster />
       </body>
     </html>
   );

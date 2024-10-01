@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   ArrowRight,
@@ -16,6 +16,9 @@ import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/Navbar/Logo";
 import nexiosInstance from "@/config/nexios.config";
+import { uploadToCloudinary } from "@/utils/ImageUpload";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const SignUpForm = () => {
   const {
@@ -24,14 +27,54 @@ const SignUpForm = () => {
     formState: { errors },
   } = useForm();
 
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+  const [imageURL, setImageURL] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+
   const onSubmit = async (data: any) => {
-    console.log(data);
-    const response = await nexiosInstance.post("/auth/signup", {
-      ...data,
-      profileImage:
-        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
-    });
-    console.log(response.data);
+    setLoading(true);
+    let uploadedImageUrl = "";
+
+    try {
+      // Upload the profile image to Cloudinary
+      if (data.profileImage && data.profileImage[0]) {
+        setIsUploading(true);
+        uploadedImageUrl = await uploadToCloudinary(data.profileImage[0]);
+        setImageURL(uploadedImageUrl);
+        setIsUploading(false);
+      }
+
+      // Wait for state to update
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      const payload = {
+        ...data,
+        profileImage: uploadedImageUrl || imageURL,
+      };
+
+      const response = await nexiosInstance.post("/auth/signup", payload);
+      if (response?.data?.success === true) {
+        toast.success(response?.data?.message);
+        router.push("/signin");
+      } else {
+        toast.error(
+          response?.data?.message || "Signup failed. Please try again."
+        );
+      }
+    } catch (error) {
+      console.error("Error signing up:", error);
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
+      }
+      toast.error("Failed to sign up. Please try again.");
+    } finally {
+      setLoading(false);
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -129,9 +172,16 @@ const SignUpForm = () => {
 
       <button
         type="submit"
-        className="bg-green-500 py-4 px-10 text-white hover:bg-opacity-95 duration-300 mt-4 flex items-center rounded-md font-semibold"
+        className="bg-green-500 py-4 px-10 text-white hover:bg-opacity-95 duration-300 mt-4 flex items-center rounded-md font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={loading || isUploading}
       >
-        Create Account <ArrowRight className="ml-2" size={18} />
+        {loading || isUploading ? (
+          "Processing..."
+        ) : (
+          <>
+            Create Account <ArrowRight className="ml-2" size={18} />
+          </>
+        )}
       </button>
     </form>
   );
