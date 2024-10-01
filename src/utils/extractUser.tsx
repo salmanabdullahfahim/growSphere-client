@@ -1,10 +1,10 @@
-import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { cookies } from "next/headers";
 
 export const extractUser = () => {
-  const accessToken = Cookies.get("accessToken");
+  const accessToken = cookies().get("accessToken");
   if (accessToken) {
-    const user = jwtDecode(accessToken);
+    const user = jwtDecode(accessToken.value);
     return user;
   }
   return null;

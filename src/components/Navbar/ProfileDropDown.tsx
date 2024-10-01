@@ -28,7 +28,7 @@ const ProfileDropDown = () => {
         <DropdownMenuSeparator />
         {user?.role === "user" ? (
           <DropdownMenuItem>
-            <Link href="/my-bookings">My Bookings</Link>
+            <Link href="/my-profile">My Profile</Link>
           </DropdownMenuItem>
         ) : (
           <DropdownMenuItem>

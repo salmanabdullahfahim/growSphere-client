@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 export const signInService = async (data: SignInUser) => {
   try {
     const response = await nexiosInstance.post("/auth/login", data);
-    console.log(response?.data?.token);
+
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
       Cookies.set("accessToken", response?.data?.token);
