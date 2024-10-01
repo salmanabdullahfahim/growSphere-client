@@ -4,10 +4,12 @@ import { TUser } from "@/types/types";
 import Link from "next/link";
 import Image from "next/image";
 import VerifiedLogo from "./VerifiedLogo";
+import { Button } from "../ui/button";
+import { AvatarCirclesDemo } from "./FollowAvatar";
 
 const UserInfo = ({ user }: { user: TUser }) => {
   return (
-    <div>
+    <div className=" pb-16 border-b-2 border-gray-200">
       <div className="flex justify-between items-center mt-20 mx-20">
         <div className="flex flex-col md:flex-row items-center gap-3">
           <Image
@@ -33,14 +35,17 @@ const UserInfo = ({ user }: { user: TUser }) => {
                 </Link>
               )}
             </div>
-            <div className="flex justify-start items-center gap-2 px-6 text-gray-600 font-semibold pt-2">
+            <div className="flex justify-start items-center gap-2 px-6 text-gray-600 font-semibold pt-1">
               <p>{user?.followers.length} followers</p>
               <span>.</span>
               <p>{user?.following.length} following</p>
             </div>
+            <AvatarCirclesDemo />
           </div>
         </div>
-        <div></div>
+        <div>
+          <Button variant="outline">✏️ Edit Profile</Button>
+        </div>
       </div>
     </div>
   );
