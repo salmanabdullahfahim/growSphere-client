@@ -8,12 +8,12 @@ import {
 import Image from "next/image";
 import verified from "@/assets/tick.png";
 
-const VerifiedLogo = () => {
+const VerifiedLogo = ({ wi, he }: { wi: number; he: number }) => {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <Image src={verified} alt="verified" width={22} height={22} />
+          <Image src={verified} alt="verified" width={wi} height={he} />
         </TooltipTrigger>
         <TooltipContent>
           <p>Verifeid</p>

@@ -25,9 +25,9 @@ const InfoCard = ({ user }: { user: TUser }) => {
           <p className="text-lg font-semibold py-2">
             ✔️ Verified: {user?.isVerified ? "Yes" : "No"}
           </p>
-          <p className="text-lg font-semibold py-1">
+          {/* <p className="text-lg font-semibold py-1">
             📅 Joined: {new Date(user?.createdAt).toLocaleDateString()}
-          </p>
+          </p> */}
         </CardContent>
         <CardFooter>
           <Button variant="outline">🖊️ Edit Profile</Button>

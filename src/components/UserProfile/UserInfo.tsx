@@ -25,7 +25,7 @@ const UserInfo = ({ user }: { user: TUser }) => {
                 {user?.name}
               </h1>
               {user?.isVerified == true ? (
-                <VerifiedLogo />
+                <VerifiedLogo wi={22} he={22} />
               ) : (
                 <Link
                   href="/verifyUser"
