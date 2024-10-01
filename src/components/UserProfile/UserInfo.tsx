@@ -1,8 +1,9 @@
 import React from "react";
 import { TUser } from "@/types/types";
-import Image from "next/image";
-import verified from "@/assets/tick.png";
+
 import Link from "next/link";
+import Image from "next/image";
+import VerifiedLogo from "./VerifiedLogo";
 
 const UserInfo = ({ user }: { user: TUser }) => {
   return (
@@ -22,7 +23,7 @@ const UserInfo = ({ user }: { user: TUser }) => {
                 {user?.name}
               </h1>
               {user?.isVerified == true ? (
-                <Image src={verified} alt="verified" width={22} height={22} />
+                <VerifiedLogo />
               ) : (
                 <Link
                   href="/verifyUser"
