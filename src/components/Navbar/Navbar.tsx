@@ -5,10 +5,14 @@ import Link from "next/link";
 
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
+
+import ProfileDropDown from "./ProfileDropDown";
+import { useUser } from "@/Context/UserContext";
 // import ProfileDropDown from "./ProfileDropDown";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { user } = useUser();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -69,15 +73,15 @@ const Navbar = () => {
       )}
       {/* Login / profile */}
 
-      {/* {user?.email ? (
-        <ProfileDropDown user={user} />
-      ) : ( */}
-      <Link href="/signin" className="ml-14">
-        <div className="flex justify-center items-center bg-green-500 hover:bg-green-500/90 text-slate-100 hover:text-white rounded-full px-2 md:px-4 py-1.5 border-[1px] text-[12px] md:text-lg text-nowrap  duration-200 cursor-pointer relative">
-          Sign In
-        </div>
-      </Link>
-      {/* )} */}
+      {user ? (
+        <ProfileDropDown />
+      ) : (
+        <Link href="/signin" className="ml-14">
+          <div className="flex justify-center items-center bg-green-500 hover:bg-green-500/90 text-slate-100 hover:text-white rounded-full px-2 md:px-4 py-1.5 border-[1px] text-[12px] md:text-lg text-nowrap  duration-200 cursor-pointer relative">
+            Sign In
+          </div>
+        </Link>
+      )}
 
       {/* mobile menu button */}
       <div className="lg:hidden">
