@@ -3,10 +3,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { ArrowRight, Mail, Lock } from "lucide-react";
+import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/Navbar/Logo";
 import { SignInUser } from "@/types/types";
+
+import { signInService } from "@/service/SignInService";
 
 const SignInForm = () => {
   const {
@@ -14,9 +17,13 @@ const SignInForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<SignInUser>();
+  const router = useRouter(); // Initialize the router
 
   const onSubmit = async (data: SignInUser) => {
-    console.log(data);
+    const success = await signInService(data);
+    if (success) {
+      router.push("/"); // Navigate to the home page after successful login
+    }
   };
 
   return (
