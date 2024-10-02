@@ -14,12 +14,12 @@ const MyFeed = async () => {
   return (
     <div className="w-full flex gap-x-7">
       {/* left */}
-      <div className="w-1/5">
-        <div className="sticky top-20 mt-20 px-6">
+      <div className="w-1/5 hidden md:block">
+        <div className="sticky top-20 mt-20 px-6 ">
           <InspiringQuotesCard />
         </div>
       </div>
-      <div className="w-2/5 mx-auto flex flex-col gap-4 mt-8">
+      <div className="w-full md:w-2/5 mx-auto flex flex-col gap-4 mt-8 px-3 md:px-0">
         <div className="relative">
           <input
             type="text"
@@ -36,8 +36,8 @@ const MyFeed = async () => {
         ))}
       </div>
       {/* right */}
-      <div className="w-1/5">
-        <div className="sticky top-20 mt-20 px-6">
+      <div className="w-1/5 hidden md:block">
+        <div className="sticky top-20 mt-20 px-6 ">
           <TrendingCard />
         </div>
       </div>
