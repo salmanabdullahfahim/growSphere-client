@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 
 import React from "react";
 import TrendingCard from "./_components/TrendingCard";
+import InspiringQuotesCard from "./_components/InspiringQuotesCard";
 
 const MyFeed = async () => {
   const posts = await getAllPosts();
@@ -15,7 +16,7 @@ const MyFeed = async () => {
       {/* left */}
       <div className="w-1/5">
         <div className="sticky top-20 mt-20 px-6">
-          <TrendingCard />
+          <InspiringQuotesCard />
         </div>
       </div>
       <div className="w-2/5 mx-auto flex flex-col gap-4 mt-8">

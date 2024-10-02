@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -13,15 +12,44 @@ const TrendingCard = () => {
     <div>
       <Card>
         <CardHeader>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Card Description</CardDescription>
+          <CardTitle>Trendings</CardTitle>
+          <CardDescription>Gardening related</CardDescription>
         </CardHeader>
         <CardContent>
-          <p>Card Content</p>
+          <p className="p-2 cursor-pointer hover:bg-gray-200 rounded-lg">
+            #UrbanGardening
+          </p>
+          <p className="p-2 cursor-pointer hover:bg-gray-200 rounded-lg">
+            #VerticalGardens
+          </p>
+          <p className="p-2 cursor-pointer hover:bg-gray-200 rounded-lg">
+            #OrganicPestControl
+          </p>
+          <p className="p-2 cursor-pointer hover:bg-gray-200 rounded-lg">
+            #HeirloomSeeds
+          </p>
+          <p className="p-2 cursor-pointer hover:bg-gray-200 rounded-lg">
+            #CompostingTips
+          </p>
+          <p className="p-2 cursor-pointer hover:bg-gray-200 rounded-lg">
+            #HydroponicSystems
+          </p>
+          <p className="p-2 cursor-pointer hover:bg-gray-200 rounded-lg">
+            #PollinatorFriendly
+          </p>
+          <p className="p-2 cursor-pointer hover:bg-gray-200 rounded-lg">
+            #IndoorHerbGarden
+          </p>
+          <p className="p-2 cursor-pointer hover:bg-gray-200 rounded-lg">
+            #DroughtTolerantPlants
+          </p>
+          <p className="p-2 cursor-pointer hover:bg-gray-200 rounded-lg">
+            #GardenToTable
+          </p>
+          <p className="p-2 cursor-pointer hover:bg-gray-200 rounded-lg">
+            #SustainableGardening
+          </p>
         </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
       </Card>
     </div>
   );
