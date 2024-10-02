@@ -1,5 +1,6 @@
 import Features from "@/components/Features/Features";
 import Hero from "@/components/Hero/Hero";
+import { HeroVideoDialogDemo } from "@/components/Hero/HeroVideo";
 import ImageGallery from "@/components/ImageGallery/ImageGallery";
 import Review from "@/components/Review/Review";
 
@@ -9,6 +10,7 @@ const HomePage = async () => {
   return (
     <div>
       <Hero />
+      <HeroVideoDialogDemo />
       <ImageGallery />
       <Features />
       <Review />
