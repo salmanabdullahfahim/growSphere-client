@@ -24,6 +24,10 @@ const Navbar = () => {
     { name: "Contact Us", href: "/contact-us" },
   ];
 
+  if (user && user.role === "user") {
+    menuItems.push({ name: "My Feed", href: "/my-feed" });
+  }
+
   return (
     <div className="bg-white flex items-center justify-between h-[65px] p-6 md:px-12 w-full shadow-md sticky top-0 z-20">
       <Logo />
