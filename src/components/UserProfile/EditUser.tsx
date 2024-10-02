@@ -61,7 +61,7 @@ const EditUser = ({ user }: { user: TUser }) => {
 
       // Update the user profile
 
-      const clientNexiosInstance = await getClientNexiosInstance();
+      // const clientNexiosInstance = await getClientNexiosInstance();
 
       // // Update the user profile
       // const response = await clientNexiosInstance;

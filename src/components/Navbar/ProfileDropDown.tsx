@@ -26,11 +26,10 @@ const ProfileDropDown = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {user?.role === "user" ? (
-          <DropdownMenuItem>
-            <Link href="/my-profile">My Profile</Link>
-          </DropdownMenuItem>
-        ) : (
+        <DropdownMenuItem>
+          <Link href="/my-profile">My Profile</Link>
+        </DropdownMenuItem>
+        {user?.role === "admin" && (
           <DropdownMenuItem>
             <Link href="/dashboard">Dashboard</Link>
           </DropdownMenuItem>

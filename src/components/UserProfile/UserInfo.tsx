@@ -44,9 +44,7 @@ const UserInfo = ({ user }: { user: TUser }) => {
             <AvatarCirclesDemo />
           </div>
         </div>
-        <div>
-          <EditUser user={user} />
-        </div>
+        <div>{/* <EditUser user={user} /> */}</div>
       </div>
     </div>
   );
