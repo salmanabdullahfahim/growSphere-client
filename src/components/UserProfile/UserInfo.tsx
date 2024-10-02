@@ -7,6 +7,7 @@ import VerifiedLogo from "./VerifiedLogo";
 
 import { AvatarCirclesDemo } from "./FollowAvatar";
 import EditUser from "./EditUser";
+import { Button } from "../ui/button";
 
 const UserInfo = ({ user }: { user: TUser }) => {
   return (
@@ -32,7 +33,7 @@ const UserInfo = ({ user }: { user: TUser }) => {
                   href="/verifyUser"
                   className="text-gray-600 font-semibold "
                 >
-                  Verify
+                  <Button variant="outline">Verify Now</Button>
                 </Link>
               )}
             </div>

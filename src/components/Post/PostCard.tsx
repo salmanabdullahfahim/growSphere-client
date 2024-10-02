@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -11,9 +13,12 @@ import Image from "next/image";
 import VerifiedLogo from "../UserProfile/VerifiedLogo";
 import { formatDate } from "@/utils/FormatDate";
 import { Button } from "../ui/button";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Heart } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const PostCard = ({ postData }: any) => {
+  const [showCommentInput, setShowCommentInput] = useState(false);
+
   return (
     <div>
       <Card>
@@ -40,6 +45,11 @@ const PostCard = ({ postData }: any) => {
                   <VerifiedLogo wi={15} he={15} />
                 )}
               </div>
+              <div className="ml-auto">
+                <Button variant="outline">
+                  <Heart />
+                </Button>
+              </div>
             </div>
           </CardTitle>
           <CardDescription className="text-lg font-semibold px-2 mt-3">
@@ -56,20 +66,33 @@ const PostCard = ({ postData }: any) => {
           />
         </CardContent>
         <CardFooter>
-          <div className="border-t border-gray-300 flex justify-between w-full py-4">
-            <div className="flex gap-x-2">
-              <Button variant="outline">
-                {postData?.upVotes}
-                <ChevronUp />
-              </Button>
-              <Button variant="outline">
-                {postData?.downVotes}
-                <ChevronDown />
-              </Button>
+          <div className="border-t border-gray-300 flex flex-col w-full py-4">
+            <div className="flex justify-between w-full">
+              <div className="flex gap-x-2">
+                <Button variant="outline">
+                  {postData?.upVotes}
+                  <ChevronUp />
+                </Button>
+                <Button variant="outline">
+                  {postData?.downVotes}
+                  <ChevronDown />
+                </Button>
+              </div>
+              <div>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowCommentInput(!showCommentInput)}
+                >
+                  💬 Comment
+                </Button>
+              </div>
             </div>
-            <div>
-              <Button variant="outline">💬 Comment</Button>
-            </div>
+            {showCommentInput && (
+              <div className="mt-4 flex gap-2">
+                <Input placeholder="Write a comment..." className="flex-grow" />
+                <Button>Submit</Button>
+              </div>
+            )}
           </div>
         </CardFooter>
       </Card>
