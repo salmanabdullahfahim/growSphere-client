@@ -1,13 +1,14 @@
 // @ts-nocheck
 
-import nexiosInstance from "@/config/nexios.config";
 import { SignInUser } from "@/types/types";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
+import { getClientNexiosInstance } from "@/config/nexios.config";
 
 export const signInService = async (data: SignInUser) => {
   try {
-    const response = await nexiosInstance.post("/auth/login", data);
+    const clientNexiosInstance = await getClientNexiosInstance();
+    const response = await clientNexiosInstance.post("/auth/login", data);
 
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
@@ -18,7 +19,7 @@ export const signInService = async (data: SignInUser) => {
       return false;
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     toast.error("Failed to sign in. Please try again.");
     return false;
   }

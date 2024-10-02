@@ -4,8 +4,9 @@ import { TUser } from "@/types/types";
 import Link from "next/link";
 import Image from "next/image";
 import VerifiedLogo from "./VerifiedLogo";
-import { Button } from "../ui/button";
+
 import { AvatarCirclesDemo } from "./FollowAvatar";
+import EditUser from "./EditUser";
 
 const UserInfo = ({ user }: { user: TUser }) => {
   return (
@@ -44,7 +45,7 @@ const UserInfo = ({ user }: { user: TUser }) => {
           </div>
         </div>
         <div>
-          <Button variant="outline">✏️ Edit Profile</Button>
+          <EditUser user={user} />
         </div>
       </div>
     </div>

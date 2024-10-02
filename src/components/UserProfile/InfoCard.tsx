@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "../ui/button";
 
 const InfoCard = ({ user }: { user: TUser }) => {
   return (
@@ -29,9 +28,7 @@ const InfoCard = ({ user }: { user: TUser }) => {
             📅 Joined: {new Date(user?.createdAt).toLocaleDateString()}
           </p> */}
         </CardContent>
-        <CardFooter>
-          <Button variant="outline">🖊️ Edit Profile</Button>
-        </CardFooter>
+        <CardFooter></CardFooter>
       </Card>
     </>
   );

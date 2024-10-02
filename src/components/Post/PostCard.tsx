@@ -14,7 +14,6 @@ import { Button } from "../ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 const PostCard = ({ postData }: any) => {
-  console.log(postData);
   return (
     <div>
       <Card>
