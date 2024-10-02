@@ -40,10 +40,10 @@ const ProfilePage = async () => {
       <UserInfo user={user} />
 
       <div className="flex items-start gap-x-6 w-full mt-6 px-12">
-        <div className="w-2/6 py-10 sticky top-0">
+        <div className="w-2/6 py-10 sticky top-0 hidden md:block">
           <InfoCard user={user} />
         </div>
-        <div className="w-4/6 mt-12 mb-5">
+        <div className="w-full md:w-4/6 mt-12 mb-5">
           <div className=" flex items-center gap-x-3 my-4 px-3">
             <Image
               src={user?.profileImage}
@@ -59,7 +59,7 @@ const ProfilePage = async () => {
           </div>
 
           {/* User Post Card*/}
-          <div className="flex flex-col gap-y-6 w-4/6">
+          <div className="flex flex-col gap-y-6 w-full md:w-4/6">
             {postData?.map((post: any) => (
               <PostCard key={post._id} postData={post} />
             ))}

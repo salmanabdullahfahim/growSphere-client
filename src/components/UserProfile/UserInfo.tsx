@@ -12,7 +12,7 @@ import { Button } from "../ui/button";
 const UserInfo = ({ user }: { user: TUser }) => {
   return (
     <div className=" pb-16 border-b-2 border-gray-200">
-      <div className="flex justify-between items-center mt-20 mx-20">
+      <div className="flex flex-col md:flex-row justify-between items-center mt-20 mx-20">
         <div className="flex flex-col md:flex-row items-center gap-3">
           <Image
             src={user?.profileImage}
@@ -45,7 +45,7 @@ const UserInfo = ({ user }: { user: TUser }) => {
             <AvatarCirclesDemo />
           </div>
         </div>
-        <div>
+        <div className="mt-4 md:mt-0">
           <EditUser user={user} />
         </div>
       </div>
