@@ -13,19 +13,52 @@ import Image from "next/image";
 import VerifiedLogo from "../UserProfile/VerifiedLogo";
 import { formatDate } from "@/utils/FormatDate";
 import { Button } from "../ui/button";
-import { ChevronDown, ChevronUp, Heart, MessageSquare } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Heart,
+  MessageSquare,
+  Star,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Tooltip } from "../ui/tooltip";
+import PremiumContentMark from "./PremiumContentMark";
 
 const PostCard = ({ postData }: any) => {
   const [showComments, setShowComments] = useState(false);
   const [showCommentInput, setShowCommentInput] = useState(false);
+  const [showFullContent, setShowFullContent] = useState(false);
+
+  const MAX_CONTENT_LENGTH = 100; // Adjust this value as needed
+
+  const renderContent = () => {
+    if (!postData?.content) return null;
+
+    if (postData.content.length <= MAX_CONTENT_LENGTH || showFullContent) {
+      return <p>{postData.content}</p>;
+    }
+
+    return (
+      <>
+        <p className="py-2 px-2">
+          {postData.content.slice(0, MAX_CONTENT_LENGTH)}...{" "}
+          <span
+            className="text-gray-700 cursor-pointer hover:underline"
+            onClick={() => setShowFullContent(true)}
+          >
+            See more
+          </span>
+        </p>
+      </>
+    );
+  };
 
   return (
     <div>
       <Card>
         <CardHeader>
           <CardTitle>
-            <div className="flex items-center">
+            <div className="flex items-center ">
               <Image
                 src={postData?.author?.profileImage}
                 alt="Author"
@@ -45,6 +78,7 @@ const PostCard = ({ postData }: any) => {
                 {postData?.author?.isVerified == true && (
                   <VerifiedLogo wi={15} he={15} />
                 )}
+                {postData?.isPremium && <PremiumContentMark />}
               </div>
               <div className="ml-auto">
                 <Button variant="outline">
@@ -58,12 +92,13 @@ const PostCard = ({ postData }: any) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {renderContent()}
           <Image
             src={postData?.images[0]}
             alt="Post"
             width={500}
             height={500}
-            className="rounded-md"
+            className="rounded-md pt-2"
           />
         </CardContent>
         <CardFooter>
