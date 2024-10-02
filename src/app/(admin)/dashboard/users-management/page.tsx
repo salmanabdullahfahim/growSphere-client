@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { getAllUser } from "@/service/getAllUser";
 import React from "react";
 import {

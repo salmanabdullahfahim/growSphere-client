@@ -6,13 +6,9 @@ const Features = () => {
   return (
     <div className="mb-6">
       <div>
-        <h2 className="text-2xl md:text-4xl font-bold text-center">
+        <h2 className="text-2xl md:text-4xl font-bold text-center mb-3">
           Features of GrowSphere
         </h2>
-        <p className="text-center mt-4 text-lg text-gray-600">
-          Discover the innovative tools and features that make GrowSphere your
-          ultimate gardening companion.
-        </p>
       </div>
 
       <div className="flex flex-col md:flex-row gap-2 px-12 my-12 w-full ">
