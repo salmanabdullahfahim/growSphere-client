@@ -13,10 +13,11 @@ import Image from "next/image";
 import VerifiedLogo from "../UserProfile/VerifiedLogo";
 import { formatDate } from "@/utils/FormatDate";
 import { Button } from "../ui/button";
-import { ChevronDown, ChevronUp, Heart } from "lucide-react";
+import { ChevronDown, ChevronUp, Heart, MessageSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 const PostCard = ({ postData }: any) => {
+  const [showComments, setShowComments] = useState(false);
   const [showCommentInput, setShowCommentInput] = useState(false);
 
   return (
@@ -81,16 +82,44 @@ const PostCard = ({ postData }: any) => {
               <div>
                 <Button
                   variant="outline"
-                  onClick={() => setShowCommentInput(!showCommentInput)}
+                  onClick={() => {
+                    setShowComments(!showComments);
+                    setShowCommentInput(!showCommentInput);
+                  }}
                 >
-                  💬 Comment
+                  <MessageSquare className="mr-2" />
+                  Comment ({postData?.comments?.length || 0})
                 </Button>
               </div>
             </div>
+
             {showCommentInput && (
               <div className="mt-4 flex gap-2">
                 <Input placeholder="Write a comment..." className="flex-grow" />
                 <Button>Submit</Button>
+              </div>
+            )}
+            {showComments && postData?.comments && (
+              <div className="mt-4">
+                {postData.comments.map((comment: any, index: number) => (
+                  <div key={index} className="bg-gray-100 p-3 rounded-md mb-2">
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src={comment.commentator.profileImage}
+                        alt="Commentator"
+                        width={32}
+                        height={32}
+                        className="rounded-full border border-gray-300"
+                      />
+                      <div>
+                        <p className="font-semibold">
+                          {comment.commentator.name}
+                        </p>
+                      </div>
+                    </div>
+                    <p className=" pl-10">{comment.content}</p>
+                  </div>
+                ))}
               </div>
             )}
           </div>
