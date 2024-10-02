@@ -12,7 +12,6 @@ import React from "react";
 
 const ProfilePage = async () => {
   const extractedUser = extractUser();
-  console.log(extractedUser);
 
   const serverNexiosInstance = await getServerNexiosInstance();
   // get user details
@@ -23,7 +22,6 @@ const ProfilePage = async () => {
     }
   );
   const user = response?.data?.data;
-  console.log(user);
 
   // get user posts
   const postsResponse = await serverNexiosInstance.get(
