@@ -20,7 +20,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <Progressbar>{children}</Progressbar>
-          <Toaster />
+          <Toaster position="top-right" />
         </Providers>
       </body>
     </html>

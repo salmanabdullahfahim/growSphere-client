@@ -1,34 +1,43 @@
+// @ts-nocheck
 "use client";
-import { useState, useEffect } from "react";
-
-import { getAllPosts } from "@/service/getAllPosts";
+import { useState, useCallback } from "react";
+import useSWR from "swr";
 import PostCard from "@/components/Post/PostCard";
 import { Search } from "lucide-react";
 import InspiringQuotesCard from "./_components/InspiringQuotesCard";
 import TrendingCard from "./_components/TrendingCard";
 import { useDebounce } from "@/hooks/debounce";
 import { PostCardSkeleton } from "./_components/PostCardSkeleton";
+import { votePost } from "@/service/vote";
+import { extractClientUser } from "@/utils/extractClientuser";
+import { getAllPosts } from "@/service/getAllPosts";
+import { toast } from "sonner";
 
 const MyFeed = () => {
-  const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const user = extractClientUser();
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setIsLoading(true);
+  const {
+    data: posts,
+    error,
+    mutate,
+  } = useSWR([`/posts`, debouncedSearchTerm], () =>
+    getAllPosts(debouncedSearchTerm)
+  );
+
+  const handleVote = useCallback(
+    async (postId: string, voteType: "upvote" | "downvote") => {
       try {
-        const data = await getAllPosts(debouncedSearchTerm);
-        setPosts(data.data || []);
+        await votePost(postId, voteType, user?.id);
+        mutate(); // This will trigger a revalidation of the data
+        toast.success(`${voteType}ed`);
       } catch (error) {
-        console.error("Error fetching posts:", error);
-      } finally {
-        setIsLoading(false);
+        console.error("Error voting:", error);
       }
-    };
-    fetchPosts();
-  }, [debouncedSearchTerm]);
+    },
+    [user?.id, mutate]
+  );
 
   return (
     <div className="w-full flex gap-x-7">
@@ -52,10 +61,16 @@ const MyFeed = () => {
             size={20}
           />
         </div>
-        {isLoading ? (
+        {!posts && !error ? (
           <PostCardSkeleton />
-        ) : posts.length > 0 ? (
-          posts.map((post: any) => <PostCard key={post._id} postData={post} />)
+        ) : error ? (
+          <p className="text-2xl text-center text-red-600 mt-4">
+            Error loading posts
+          </p>
+        ) : posts.data && posts.data.length > 0 ? (
+          posts.data.map((post: any) => (
+            <PostCard key={post._id} postData={post} onVote={handleVote} />
+          ))
         ) : (
           <p className="text-2xl text-center text-gray-600 mt-4">
             No posts found

@@ -18,7 +18,13 @@ import { Input } from "@/components/ui/input";
 
 import PremiumContentMark from "./PremiumContentMark";
 
-const PostCard = ({ postData }: any) => {
+const PostCard = ({
+  postData,
+  onVote,
+}: {
+  postData: any;
+  onVote: (postId: string, voteType: "upvote" | "downvote") => Promise<void>;
+}) => {
   const [showComments, setShowComments] = useState(false);
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [showFullContent, setShowFullContent] = useState(false);
@@ -99,12 +105,18 @@ const PostCard = ({ postData }: any) => {
           <div className="border-t border-gray-300 flex flex-col w-full py-4">
             <div className="flex justify-between w-full">
               <div className="flex gap-x-2">
-                <Button variant="outline">
-                  {postData?.upVotes}
+                <Button
+                  variant="outline"
+                  onClick={() => onVote(postData._id, "upvote")}
+                >
+                  {postData.upVotes}
                   <ChevronUp />
                 </Button>
-                <Button variant="outline">
-                  {postData?.downVotes}
+                <Button
+                  variant="outline"
+                  onClick={() => onVote(postData._id, "downvote")}
+                >
+                  {postData.downVotes}
                   <ChevronDown />
                 </Button>
               </div>
