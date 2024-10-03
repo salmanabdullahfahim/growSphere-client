@@ -7,16 +7,25 @@ import { Search } from "lucide-react";
 import InspiringQuotesCard from "./_components/InspiringQuotesCard";
 import TrendingCard from "./_components/TrendingCard";
 import { useDebounce } from "@/hooks/debounce";
+import { PostCardSkeleton } from "./_components/PostCardSkeleton";
 
 const MyFeed = () => {
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const data = await getAllPosts(debouncedSearchTerm);
-      setPosts(data.data || []);
+      setIsLoading(true);
+      try {
+        const data = await getAllPosts(debouncedSearchTerm);
+        setPosts(data.data || []);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchPosts();
   }, [debouncedSearchTerm]);
@@ -34,7 +43,7 @@ const MyFeed = () => {
           <input
             type="text"
             placeholder="Search..."
-            className="w-full px-4 py-2 border rounded-md border-gray-300 pl-10"
+            className="w-full px-4 py-2 border rounded-lg border-gray-300 pl-10"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -43,7 +52,9 @@ const MyFeed = () => {
             size={20}
           />
         </div>
-        {posts.length > 0 ? (
+        {isLoading ? (
+          <PostCardSkeleton />
+        ) : posts.length > 0 ? (
           posts.map((post: any) => <PostCard key={post._id} postData={post} />)
         ) : (
           <p className="text-2xl text-center text-gray-600 mt-4">
