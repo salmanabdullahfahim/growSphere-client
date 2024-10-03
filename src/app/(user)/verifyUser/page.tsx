@@ -1,25 +1,37 @@
+"use client";
+
 import Logo from "@/components/Navbar/Logo";
 import { Button } from "@/components/ui/button";
 import VerifiedLogo from "@/components/UserProfile/VerifiedLogo";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
-import { redirect } from "next/navigation";
-import { extractUser } from "@/utils/extractUser";
 import { verifyUser } from "@/service/verifyUser";
 
+import { extractClientUser } from "@/utils/extractClientuser";
+
 const VerifyUser = () => {
-  const extractedUser = extractUser();
+  const user = extractClientUser();
+  const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState("");
 
   async function handleVerify() {
-    "use server";
-    // @ts-expect-error
-    const result = await verifyUser(extractedUser.id);
-    if (result.success && result.payment_url) {
-      redirect(result.payment_url);
-    } else {
-      // TODO: Handle error, e.g., by passing error message to the page
-      console.error(result.error);
+    try {
+      // @ts-expect-error
+      const result = await verifyUser(user?.id);
+      if (result.success && result.payment_url) {
+        router.push(result.payment_url);
+      } else {
+        setErrorMessage(
+          result.message || "Verification failed. Please try again."
+        );
+      }
+    } catch (error) {
+      console.error("Verification error:", error);
+      setErrorMessage(
+        "An error occurred during verification. Please try again."
+      );
     }
   }
 
@@ -49,15 +61,18 @@ const VerifyUser = () => {
           <Link href="/">
             <Button variant="outline">Back to Home</Button>
           </Link>
-          <form action={handleVerify}>
-            <button
-              type="submit"
-              className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-colors"
-            >
-              Verify Now
-            </button>
-          </form>
+          <Button
+            onClick={handleVerify}
+            className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-colors"
+          >
+            Verify Now
+          </Button>
         </div>
+        {errorMessage && (
+          <p className="text-white mt-6 text-[1rem] font-semibold bg-red-500 rounded-lg px-4 py-2">
+            {errorMessage}
+          </p>
+        )}
       </div>
     </div>
   );

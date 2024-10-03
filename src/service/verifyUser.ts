@@ -13,7 +13,8 @@ export async function verifyUser(userId: string) {
       // @ts-expect-error
       return { success: true, payment_url: response.data.data.payment_url };
     } else {
-      throw new Error("Invalid response from server");
+      // @ts-expect-error
+      return { success: false, message: response.data.message };
     }
   } catch (error) {
     console.error("Verification failed:", error);
