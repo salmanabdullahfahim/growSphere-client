@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { getAllUser } from "@/service/getAllUser";
 import React from "react";
 import {
@@ -30,6 +29,7 @@ const UserManagement = async () => {
         </TableHeader>
         <TableBody>
           {users?.data.map((user: TUser) => (
+            // @ts-expect-error
             <TableRow key={user._id}>
               <TableCell>
                 <Image

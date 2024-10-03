@@ -16,7 +16,8 @@ import { User, Mail, Phone, Image as ImageIcon } from "lucide-react";
 import { uploadToCloudinary } from "@/utils/ImageUpload";
 import { toast } from "sonner";
 import Image from "next/image";
-import { getClientNexiosInstance } from "@/config/nexios.config";
+import { updateUser } from "@/service/updateUser";
+import { useRouter } from "next/navigation";
 
 const EditUser = ({ user }: { user: TUser }) => {
   const {
@@ -35,6 +36,9 @@ const EditUser = ({ user }: { user: TUser }) => {
   const [loading, setLoading] = useState(false);
   const [imageURL, setImageURL] = useState(user.profileImage);
   const [isUploading, setIsUploading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const router = useRouter();
 
   const onSubmit = async (data: any) => {
     setLoading(true);
@@ -53,24 +57,17 @@ const EditUser = ({ user }: { user: TUser }) => {
       await new Promise((resolve) => setTimeout(resolve, 0));
 
       const payload = {
+        _id: user._id,
         name: data.name,
         email: data.email,
         phone: data.phone || user.phone,
         profileImage: uploadedImageUrl || imageURL || user.profileImage,
       };
 
-      // Update the user profile
-
-      // const clientNexiosInstance = await getClientNexiosInstance();
-
-      // // Update the user profile
-      // const response = await clientNexiosInstance;
-      // console.log(response);
-      // if (response?.data?.success === true) {
-      //   toast.success("Profile updated successfully");
-      // } else {
-      //   toast.error("Failed to update profile. Please try again.");
-      // }
+      await updateUser(payload);
+      toast.success("Profile updated successfully");
+      router.refresh();
+      setIsOpen(false);
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error("Failed to update profile. Please try again.");
@@ -81,9 +78,11 @@ const EditUser = ({ user }: { user: TUser }) => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">✏️ Edit Profile</Button>
+        <Button variant="outline" onClick={() => setIsOpen(true)}>
+          ✏️ Edit Profile
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

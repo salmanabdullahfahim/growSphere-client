@@ -13,15 +13,9 @@ import Image from "next/image";
 import VerifiedLogo from "../UserProfile/VerifiedLogo";
 import { formatDate } from "@/utils/FormatDate";
 import { Button } from "../ui/button";
-import {
-  ChevronDown,
-  ChevronUp,
-  Heart,
-  MessageSquare,
-  Star,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Heart, MessageSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Tooltip } from "../ui/tooltip";
+
 import PremiumContentMark from "./PremiumContentMark";
 
 const PostCard = ({ postData }: any) => {

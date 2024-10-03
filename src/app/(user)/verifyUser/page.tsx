@@ -4,7 +4,25 @@ import VerifiedLogo from "@/components/UserProfile/VerifiedLogo";
 import Link from "next/link";
 import React from "react";
 
+import { redirect } from "next/navigation";
+import { extractUser } from "@/utils/extractUser";
+import { verifyUser } from "@/service/verifyUser";
+
 const VerifyUser = () => {
+  const extractedUser = extractUser();
+
+  async function handleVerify() {
+    "use server";
+    // @ts-expect-error
+    const result = await verifyUser(extractedUser.id);
+    if (result.success && result.payment_url) {
+      redirect(result.payment_url);
+    } else {
+      // TODO: Handle error, e.g., by passing error message to the page
+      console.error(result.error);
+    }
+  }
+
   return (
     <div className="mx-auto mt-10 p-6">
       <div className="px-2">
@@ -29,12 +47,16 @@ const VerifyUser = () => {
         </p>
         <div className="flex justify-between items-center pt-4">
           <Link href="/">
-            {" "}
             <Button variant="outline">Back to Home</Button>
           </Link>
-          <button className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-colors">
-            Verify Now
-          </button>
+          <form action={handleVerify}>
+            <button
+              type="submit"
+              className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-colors"
+            >
+              Verify Now
+            </button>
+          </form>
         </div>
       </div>
     </div>

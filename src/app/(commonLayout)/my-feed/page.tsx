@@ -1,15 +1,25 @@
-import PostCard from "@/components/Post/PostCard";
+"use client";
+import { useState, useEffect } from "react";
 
 import { getAllPosts } from "@/service/getAllPosts";
+import PostCard from "@/components/Post/PostCard";
 import { Search } from "lucide-react";
-
-import React from "react";
-import TrendingCard from "./_components/TrendingCard";
 import InspiringQuotesCard from "./_components/InspiringQuotesCard";
+import TrendingCard from "./_components/TrendingCard";
+import { useDebounce } from "@/hooks/debounce";
 
-const MyFeed = async () => {
-  const posts = await getAllPosts();
-  // console.log(posts.data.posts);
+const MyFeed = () => {
+  const [posts, setPosts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const data = await getAllPosts(debouncedSearchTerm);
+      setPosts(data.data || []);
+    };
+    fetchPosts();
+  }, [debouncedSearchTerm]);
 
   return (
     <div className="w-full flex gap-x-7">
@@ -25,13 +35,15 @@ const MyFeed = async () => {
             type="text"
             placeholder="Search..."
             className="w-full px-4 py-2 border rounded-md border-gray-300 pl-10"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Search
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
             size={20}
           />
         </div>
-        {posts.data.posts.map((post: any) => (
+        {posts.map((post: any) => (
           <PostCard key={post._id} postData={post} />
         ))}
       </div>

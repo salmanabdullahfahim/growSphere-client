@@ -1,10 +1,10 @@
-// @ts-nocheck
 import Logo from "@/components/Navbar/Logo";
 import CreatePost from "@/components/Post/CreatePost";
 import PostCard from "@/components/Post/PostCard";
 import InfoCard from "@/components/UserProfile/InfoCard";
 import UserInfo from "@/components/UserProfile/UserInfo";
 import { getServerNexiosInstance } from "@/config/nexios.config";
+import { createPost } from "@/service/createPost";
 import { extractUser } from "@/utils/extractUser";
 import Image from "next/image";
 
@@ -15,12 +15,15 @@ const ProfilePage = async () => {
 
   const serverNexiosInstance = await getServerNexiosInstance();
   // get user details
+
   const response = await serverNexiosInstance.get(
+    // @ts-expect-error
     `/user/${extractedUser?.email}`,
     {
       cache: "no-store",
     }
   );
+  // @ts-expect-error
   const user = response?.data?.data;
 
   // get user posts
@@ -30,6 +33,7 @@ const ProfilePage = async () => {
       cache: "no-store",
     }
   );
+  // @ts-expect-error
   const postData = postsResponse?.data?.data;
 
   return (
@@ -52,7 +56,7 @@ const ProfilePage = async () => {
               height={50}
               className="rounded-full border border-gray-300"
             />
-            <CreatePost user={user} />
+            <CreatePost user={user} createPostAction={createPost} />
           </div>
           <div className="p-6 w-full shadow-sm rounded-lg border border-gray-300 mb-3">
             <h1 className="text-2xl font-bold pl-7">My Posts</h1>
@@ -60,7 +64,8 @@ const ProfilePage = async () => {
 
           {/* User Post Card*/}
           <div className="flex flex-col gap-y-6 w-full md:w-4/6">
-            {postData?.map((post: any) => (
+            {/* @ts-expect-error */}
+            {postData?.map((post) => (
               <PostCard key={post._id} postData={post} />
             ))}
           </div>
