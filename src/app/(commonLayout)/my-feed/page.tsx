@@ -43,9 +43,13 @@ const MyFeed = () => {
             size={20}
           />
         </div>
-        {posts.map((post: any) => (
-          <PostCard key={post._id} postData={post} />
-        ))}
+        {posts.length > 0 ? (
+          posts.map((post: any) => <PostCard key={post._id} postData={post} />)
+        ) : (
+          <p className="text-2xl text-center text-gray-600 mt-4">
+            No posts found
+          </p>
+        )}
       </div>
       {/* right */}
       <div className="w-1/5 hidden md:block">
