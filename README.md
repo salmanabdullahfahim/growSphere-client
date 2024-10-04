@@ -10,7 +10,6 @@ A full-stack web application designed for gardening enthusiasts to share, discov
 - [Core Technologies](#core-technologies)
 - [Installation](#installation)
 - [Future Enhancements](#future-enhancements)
-- [License](#license)
 
 ---
 
@@ -90,8 +89,8 @@ A full-stack web application designed for gardening enthusiasts to share, discov
 ### 1. Clone the repository:
 
 ````bash
-git clone https://github.com/your-username/gardening-tips-platform.git
-cd gardening-tips-platform
+git clone https://github.com/salmanabdullahfahim/growSphere-client.git
+cd growSphere-client
 
 ### 2. Install dependencies:
 
