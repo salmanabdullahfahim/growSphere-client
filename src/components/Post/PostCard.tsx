@@ -99,11 +99,13 @@ const PostCard = ({
                 )}
                 {postData?.isPremium && <PremiumContentMark />}
               </div>
-              <div className="ml-auto">
-                <Button variant="outline" onClick={handleFavorite}>
-                  <Heart fill={isFavorite ? "currentColor" : "none"} />
-                </Button>
-              </div>
+              {user?.id !== postData?.author?._id && (
+                <div className="ml-auto">
+                  <Button variant="outline" onClick={handleFavorite}>
+                    <Heart fill={isFavorite ? "currentColor" : "none"} />
+                  </Button>
+                </div>
+              )}
             </div>
           </CardTitle>
           <CardDescription className="text-lg font-semibold px-2 mt-3">

@@ -44,10 +44,10 @@ const ProfilePage = async () => {
       <UserInfo user={user} />
 
       <div className="flex items-start gap-x-6 w-full mt-6 px-12">
-        <div className="w-2/6 py-10 sticky top-0 hidden md:block">
+        <div className="w-1/6 py-10 sticky top-0 hidden md:block">
           <InfoCard user={user} />
         </div>
-        <div className="w-full md:w-4/6 mt-12 mb-5">
+        <div className="w-full md:w-4/6 mt-12 mb-5 ">
           <div className=" flex items-center gap-x-3 my-4 px-3">
             <Image
               src={user?.profileImage}
@@ -58,17 +58,28 @@ const ProfilePage = async () => {
             />
             <CreatePost user={user} createPostAction={createPost} />
           </div>
-          <div className="p-6 w-full shadow-sm rounded-lg border border-gray-300 mb-3">
-            <h1 className="text-2xl font-bold pl-7">My Posts</h1>
-          </div>
+          <div className="flex flex-col gap-y-4 items-center">
+            <div className="p-6 w-full shadow-sm rounded-lg border border-gray-300 mb-3">
+              <h1 className="text-2xl font-bold pl-7">My Posts</h1>
+            </div>
 
-          {/* User Post Card*/}
-          <div className="flex flex-col gap-y-6 w-full md:w-4/6">
-            {/* @ts-expect-error */}
-            {postData?.map((post) => (
-              <PostCard key={post._id} postData={post} />
-            ))}
+            {/* User Post Card*/}
+            <div className="flex flex-col gap-y-6 w-full md:w-4/6">
+              {/* @ts-expect-error */}
+              {postData?.map((post) => (
+                // @ts-expect-error
+                <PostCard key={post._id} postData={post} />
+              ))}
+            </div>
           </div>
+        </div>
+        <div className="w-2/6 py-60 sticky top-0 hidden md:block">
+          <h1 className="text-2xl font-bold pl-7">Favorite Posts</h1>
+          {/* @ts-expect-error */}
+          {user?.favoritesPosts?.map((post) => (
+            // @ts-expect-error
+            <PostCard key={post._id} postData={post} />
+          ))}
         </div>
       </div>
     </div>
