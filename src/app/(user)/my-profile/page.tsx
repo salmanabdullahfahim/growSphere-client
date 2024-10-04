@@ -73,14 +73,16 @@ const ProfilePage = async () => {
             </div>
           </div>
         </div>
-        <div className="w-2/6 py-60 sticky top-0 hidden md:block">
-          <h1 className="text-2xl font-bold pl-7">Favorite Posts</h1>
-          {/* @ts-expect-error */}
-          {user?.favoritesPosts?.map((post) => (
-            // @ts-expect-error
-            <PostCard key={post._id} postData={post} />
-          ))}
-        </div>
+        {user?.favoritesPosts.length > 0 && (
+          <div className="w-2/6 py-60 sticky top-0 hidden md:block">
+            <h1 className="text-2xl font-bold pl-7">Favorite Posts</h1>
+            {/* @ts-expect-error */}
+            {user?.favoritesPosts?.map((post) => (
+              // @ts-expect-error
+              <PostCard key={post._id} postData={post} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
