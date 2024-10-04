@@ -5,7 +5,7 @@ import { getServerNexiosInstance } from "@/config/nexios.config";
 export async function favoritePost(postId: string, userId: string) {
   try {
     const nexios = await getServerNexiosInstance();
-    // @ts-expect-error
+
     const response = await nexios.post(`/user/favorite/${postId}`, {
       userId,
     });

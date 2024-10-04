@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const portfolioList = [
@@ -72,9 +73,11 @@ const ImageGallery = () => {
           {portfolioList.map((portfolio, i) => (
             <div className="col-span-12 md:col-span-6 lg:col-span-4" key={i}>
               <div className="group relative text-center">
-                <img
+                <Image
                   src={portfolio.image}
-                  alt={portfolio.title}
+                  alt=""
+                  width={500}
+                  height={500}
                   className="max-w-full w-full h-auto rounded-xl"
                 />
                 <div className="absolute left-4 right-4 bottom-4 rounded-xl bg-white bg-opacity-70 dark:bg-black dark:bg-opacity-40 bg-blur-sm bg-saturate-200 translate-y-5 opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100 text-center p-6">

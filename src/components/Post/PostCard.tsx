@@ -61,7 +61,11 @@ const PostCard = ({
 
   const handleFavorite = async () => {
     try {
-      const result = await favoritePost(postData._id, user?.id);
+      const result = await favoritePost(
+        postData._id,
+        // @ts-expect-error
+        user?.id
+      );
       if (result.success) {
         setIsFavorite(!isFavorite);
         toast.success(result.message);
@@ -99,6 +103,7 @@ const PostCard = ({
                 )}
                 {postData?.isPremium && <PremiumContentMark />}
               </div>
+              {/* @ts-expect-error */}
               {user?.id !== postData?.author?._id && (
                 <div className="ml-auto">
                   <Button variant="outline" onClick={handleFavorite}>

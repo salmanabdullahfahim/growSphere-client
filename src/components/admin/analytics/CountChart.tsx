@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+
 import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
 
 const data = [
