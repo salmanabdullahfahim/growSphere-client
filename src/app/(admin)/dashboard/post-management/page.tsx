@@ -13,7 +13,7 @@ const PostManagement = async () => {
       <div className="p-6 w-4/6 my-12 mx-auto">
         <div className="flex flex-col gap-y-6">
           {/* @ts-expect-error */}
-          {posts.data.posts.map((post) => (
+          {posts.data.map((post) => (
             // @ts-expect-error
             <PostCard key={post._id} postData={post} />
           ))}

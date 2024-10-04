@@ -87,7 +87,7 @@ export function Sidebar() {
                 Payment History
               </label>
               <NavItem
-                href="/dashboard/payment"
+                href="/dashboard/payment-management"
                 icon={<FolderKanban className="h-5 w-5" aria-hidden="true" />}
                 label="All Payments"
               />

@@ -24,7 +24,8 @@ const UserManagement = async () => {
             <TableHead>Profile Image</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Verified</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -42,7 +43,18 @@ const UserManagement = async () => {
               </TableCell>
               <TableCell>{user?.name}</TableCell>
               <TableCell>{user?.email}</TableCell>
-              <TableCell>{user?.isVerified ? "Yes" : "No"}</TableCell>
+              <TableCell>{user?.status}</TableCell>
+              <TableCell>
+                {user?.status === "active" ? (
+                  <button className="text-sm text-gray-100 font-semibold bg-red-500 rounded-lg px-2 py-1 hover:bg-red-600">
+                    Block
+                  </button>
+                ) : (
+                  <button className="text-sm text-gray-100 font-semibold bg-green-500 rounded-lg px-2 py-1 hover:bg-green-600">
+                    Unblock
+                  </button>
+                )}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
