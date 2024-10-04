@@ -17,6 +17,9 @@ import { ChevronDown, ChevronUp, Heart, MessageSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 import PremiumContentMark from "./PremiumContentMark";
+import { favoritePost } from "@/service/favouritePost";
+import { extractClientUser } from "@/utils/extractClientuser";
+import { toast } from "sonner";
 
 const PostCard = ({
   postData,
@@ -28,6 +31,9 @@ const PostCard = ({
   const [showComments, setShowComments] = useState(false);
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [showFullContent, setShowFullContent] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(postData.isFavorite || false);
+
+  const user = extractClientUser();
 
   const MAX_CONTENT_LENGTH = 100; // Adjust this value as needed
 
@@ -51,6 +57,19 @@ const PostCard = ({
         </p>
       </>
     );
+  };
+
+  const handleFavorite = async () => {
+    try {
+      const result = await favoritePost(postData._id, user?.id);
+      if (result.success) {
+        setIsFavorite(!isFavorite);
+        toast.success(result.message);
+      }
+    } catch (error) {
+      console.error("Error favoriting post:", error);
+      toast.error("Error favoriting post");
+    }
   };
 
   return (
@@ -81,8 +100,8 @@ const PostCard = ({
                 {postData?.isPremium && <PremiumContentMark />}
               </div>
               <div className="ml-auto">
-                <Button variant="outline">
-                  <Heart />
+                <Button variant="outline" onClick={handleFavorite}>
+                  <Heart fill={isFavorite ? "currentColor" : "none"} />
                 </Button>
               </div>
             </div>
