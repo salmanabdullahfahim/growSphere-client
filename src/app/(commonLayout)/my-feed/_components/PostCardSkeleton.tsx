@@ -33,7 +33,7 @@ export function PostCardSkeleton() {
 
         <CardContent>
           {/* Post Content Skeleton */}
-          <Skeleton className="rounded-md w-[500px] h-[300px] pt-2" />
+          <Skeleton className="rounded-md w-[450px] h-[300px] pt-2" />
         </CardContent>
 
         <CardFooter>

@@ -12,6 +12,7 @@ import { votePost } from "@/service/vote";
 import { extractClientUser } from "@/utils/extractClientuser";
 import { getAllPosts } from "@/service/getAllPosts";
 import { toast } from "sonner";
+import { addComment } from "@/service/addComment";
 
 const MyFeed = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,7 +23,7 @@ const MyFeed = () => {
     data: posts,
     error,
     mutate,
-  } = useSWR([`/posts`, debouncedSearchTerm], () =>
+  } = useSWR([`/post`, debouncedSearchTerm], () =>
     getAllPosts(debouncedSearchTerm)
   );
 
@@ -37,6 +38,22 @@ const MyFeed = () => {
       }
     },
     [user?.id, mutate]
+  );
+
+  const handleAddComment = useCallback(
+    async (postId: string, content: string) => {
+      try {
+        const newComment = await addComment(postId, content, user.id);
+
+        mutate();
+
+        toast.success("Comment added successfully");
+      } catch (error) {
+        console.error("Error adding comment:", error);
+        toast.error("Failed to add comment");
+      }
+    },
+    [user.id, mutate]
   );
 
   return (
@@ -69,7 +86,12 @@ const MyFeed = () => {
           </p>
         ) : posts.data && posts.data.length > 0 ? (
           posts.data.map((post: any) => (
-            <PostCard key={post._id} postData={post} onVote={handleVote} />
+            <PostCard
+              key={post._id}
+              postData={post}
+              onVote={handleVote}
+              onAddComment={handleAddComment}
+            />
           ))
         ) : (
           <p className="text-2xl text-center text-gray-600 mt-4">

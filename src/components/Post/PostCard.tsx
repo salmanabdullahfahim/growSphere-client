@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import {
   Card,
   CardContent,
@@ -16,26 +16,68 @@ import { formatDate } from "@/utils/FormatDate";
 import { Button } from "../ui/button";
 import { ChevronDown, ChevronUp, Heart, MessageSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useOptimistic } from "react";
 
 import PremiumContentMark from "./PremiumContentMark";
 import { favoritePost } from "@/service/favouritePost";
 import { extractClientUser } from "@/utils/extractClientuser";
 import { toast } from "sonner";
 import { PostActionsDropdownMenu } from "@/app/(commonLayout)/my-feed/_components/PostActionsDropDown";
+import { addComment } from "@/service/addComment";
 
 const PostCard = ({
   postData,
   onVote,
+  onAddComment,
 }: {
   postData: any;
   onVote: (postId: string, voteType: "upvote" | "downvote") => Promise<void>;
+  onAddComment: (postId: string, content: string) => Promise<void>;
 }) => {
   const [showComments, setShowComments] = useState(false);
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [showFullContent, setShowFullContent] = useState(false);
   const [isFavorite, setIsFavorite] = useState(postData.isFavorite || false);
+  const [commentContent, setCommentContent] = useState("");
+  const [isPending, startTransition] = useTransition();
+  const [isAddingComment, setIsAddingComment] = useState(false);
 
   const user = extractClientUser();
+
+  const [optimisticComments, addOptimisticComment] = useOptimistic(
+    postData.comments,
+    (state, newComment) => [...state, newComment]
+  );
+
+  const handleAddComment = async () => {
+    if (!commentContent.trim() || !user) return;
+
+    const optimisticComment = {
+      _id: Date.now().toString(),
+      content: commentContent,
+      commentator: {
+        _id: user.id,
+        name: user.name,
+        profileImage: user.profileImage,
+      },
+      createdAt: new Date().toISOString(),
+    };
+
+    addOptimisticComment(optimisticComment);
+    setCommentContent("");
+
+    try {
+      await onAddComment(postData._id, commentContent);
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      toast.error("Failed to add comment. Please try again.");
+      // Remove the optimistic comment if the server request fails
+      addOptimisticComment((comments) =>
+        comments.filter((c) => c._id !== optimisticComment._id)
+      );
+    }
+  };
 
   const MAX_CONTENT_LENGTH = 100; // Adjust this value as needed
 
@@ -167,32 +209,26 @@ const PostCard = ({
               </div>
             </div>
 
-            {showCommentInput && (
+            {showCommentInput && user && (
               <div className="mt-4 flex gap-2">
-                <Input placeholder="Write a comment..." className="flex-grow" />
-                <Button>Submit</Button>
+                <Input
+                  placeholder="Write a comment..."
+                  className="flex-grow"
+                  value={commentContent}
+                  onChange={(e) => setCommentContent(e.target.value)}
+                />
+                <Button
+                  onClick={handleAddComment}
+                  disabled={isPending || isAddingComment}
+                >
+                  {isPending || isAddingComment ? "Submitting..." : "Submit"}
+                </Button>
               </div>
             )}
-            {showComments && postData?.comments && (
+            {showComments && (
               <div className="mt-4">
-                {postData.comments.map((comment: any, index: number) => (
-                  <div key={index} className="bg-gray-100 p-3 rounded-md mb-2">
-                    <div className="flex items-center gap-2">
-                      <Image
-                        src={comment.commentator.profileImage}
-                        alt="Commentator"
-                        width={32}
-                        height={32}
-                        className="rounded-full border border-gray-300"
-                      />
-                      <div>
-                        <p className="font-semibold">
-                          {comment.commentator.name}
-                        </p>
-                      </div>
-                    </div>
-                    <p className=" pl-10">{comment.content}</p>
-                  </div>
+                {optimisticComments.map((comment, index) => (
+                  <CommentItem key={comment._id || index} comment={comment} />
                 ))}
               </div>
             )}
@@ -202,5 +238,37 @@ const PostCard = ({
     </div>
   );
 };
+
+const CommentSkeleton = () => (
+  <div className="bg-gray-100 p-3 rounded-md mb-2 animate-pulse">
+    <div className="flex items-center gap-2">
+      <Skeleton className="w-8 h-8 rounded-full" />
+      <Skeleton className="h-4 w-24" />
+    </div>
+    <Skeleton className="h-4 w-full mt-2" />
+  </div>
+);
+
+const CommentItem = ({ comment }: { comment: any }) => (
+  <div className="bg-gray-100/60 p-3 rounded-md mb-2">
+    <div className="flex items-center gap-x-2">
+      {comment.commentator?.profileImage && (
+        <Image
+          src={comment.commentator.profileImage}
+          alt="Commentator"
+          width={32}
+          height={32}
+          className="rounded-full border border-gray-300"
+        />
+      )}
+      <div>
+        <p className="font-semibold">{comment.commentator?.name}</p>
+      </div>
+    </div>
+    <p className="pl-10 text-sm bg-gray-200/50 rounded-md p-1 mt-2">
+      {comment.content}
+    </p>
+  </div>
+);
 
 export default PostCard;
