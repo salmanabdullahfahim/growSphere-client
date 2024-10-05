@@ -29,11 +29,7 @@ const ProfileDropDown = () => {
         <DropdownMenuItem>
           <Link href="/my-profile">My Profile</Link>
         </DropdownMenuItem>
-        {user?.role === "admin" && (
-          <DropdownMenuItem>
-            <Link href="/dashboard">Dashboard</Link>
-          </DropdownMenuItem>
-        )}
+
         <DropdownMenuItem onClick={logout} className="cursor-pointer">
           SignOut
         </DropdownMenuItem>
