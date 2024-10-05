@@ -49,7 +49,7 @@ export function OptionsDropdownMenu({ postId }: { postId: string }) {
             disabled={isDeleting}
           >
             <Trash2 className="mr-2 w-5 h-5" />
-            {isDeleting ? "" : "Delete Post"}
+            {isDeleting ? "Deleting..." : "Delete Post"}
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
