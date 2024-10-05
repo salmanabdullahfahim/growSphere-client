@@ -10,6 +10,8 @@ export async function deletePost(postId: string) {
 
     // Revalidate the post management page to reflect the changes
     revalidatePath("/dashboard/post-management");
+    revalidatePath("/my-profile");
+    revalidatePath("/my-feed");
 
     return { success: true, message: "Post deleted successfully" };
   } catch (error) {
