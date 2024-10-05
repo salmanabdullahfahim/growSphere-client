@@ -8,6 +8,8 @@ import VerifiedLogo from "./VerifiedLogo";
 import { AvatarCirclesDemo } from "./FollowAvatar";
 import EditUser from "./EditUser";
 import { Button } from "../ui/button";
+import FollowerDialog from "./FollowerDialog";
+import FollowingDialog from "./FollowingDialog";
 
 const UserInfo = ({ user }: { user: TUser }) => {
   return (
@@ -37,10 +39,10 @@ const UserInfo = ({ user }: { user: TUser }) => {
                 </Link>
               )}
             </div>
-            <div className="flex justify-start items-center gap-2 px-6 text-gray-600 font-semibold pt-1">
-              <p>{user?.followers.length} followers</p>
+            <div className="flex justify-start items-center gap-2 px-6 pt-1">
+              <FollowerDialog user={user} />
               <span>.</span>
-              <p>{user?.following.length} following</p>
+              <FollowingDialog user={user} />
             </div>
             <AvatarCirclesDemo />
           </div>

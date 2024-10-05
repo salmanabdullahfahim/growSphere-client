@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { TUser } from "@/types/types";
 import React from "react";
 import {
@@ -7,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { formatDate } from "@/utils/FormatDate";
 
 const InfoCard = ({ user }: { user: TUser }) => {
   return (
@@ -18,15 +20,21 @@ const InfoCard = ({ user }: { user: TUser }) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="text-gray-600">
-          <p className="text-lg font-semibold py-2">🎗️ Profile: {user?.role}</p>
-          <p className="text-lg font-semibold py-2">📨 Email: {user?.email}</p>
-          <p className="text-lg font-semibold py-2">📞 Phone: {user?.phone}</p>
-          <p className="text-lg font-semibold py-2">
+          <p className="text-[1rem] font-semibold py-2">
+            🎗️ Profile: {user?.role}
+          </p>
+          <p className="text-[1rem] font-semibold py-2">
+            📨 Email: {user?.email}
+          </p>
+          <p className="text-[1rem] font-semibold py-2">
+            📞 Phone: {user?.phone}
+          </p>
+          <p className="text-[1rem] font-semibold py-2">
             ✔️ Verified: {user?.isVerified ? "Yes" : "No"}
           </p>
-          {/* <p className="text-lg font-semibold py-1">
-            📅 Joined: {new Date(user?.createdAt).toLocaleDateString()}
-          </p> */}
+          <p className="text-[1rem] font-semibold py-1">
+            📅 Joined: {formatDate(user?.createdAt)}
+          </p>
         </CardContent>
         <CardFooter></CardFooter>
       </Card>

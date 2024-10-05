@@ -44,10 +44,10 @@ const ProfilePage = async () => {
       <UserInfo user={user} />
 
       <div className="flex items-start gap-x-6 w-full mt-6 px-12">
-        <div className="w-1/6 py-10 sticky top-0 hidden md:block">
+        <div className="w-[25%] py-10 sticky top-0 hidden md:block">
           <InfoCard user={user} />
         </div>
-        <div className="w-full md:w-4/6 mt-12 mb-5 ">
+        <div className="w-full md:w-4/6 mt-12 mb-5 px-4 ">
           <div className=" flex items-center gap-x-3 my-4 px-3">
             <Image
               src={user?.profileImage}
@@ -75,7 +75,7 @@ const ProfilePage = async () => {
         </div>
         {user?.favoritesPosts.length > 0 && (
           <div className="w-2/6 py-60 sticky top-0 hidden md:block">
-            <h1 className="text-2xl font-bold pl-7">Favorite Posts</h1>
+            <h1 className="text-2xl font-bold pl-7 mb-8">Favorite Posts</h1>
             {/* @ts-expect-error */}
             {user?.favoritesPosts?.map((post) => (
               // @ts-expect-error

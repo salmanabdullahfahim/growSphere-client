@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useUser } from "@/Context/UserContext";
 
 const ProfileDropDown = () => {
-  const { user, logout } = useUser();
+  const { logout } = useUser();
 
   return (
     <DropdownMenu>

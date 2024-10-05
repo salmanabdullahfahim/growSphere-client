@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import React, { useState } from "react";
@@ -20,6 +21,7 @@ import PremiumContentMark from "./PremiumContentMark";
 import { favoritePost } from "@/service/favouritePost";
 import { extractClientUser } from "@/utils/extractClientuser";
 import { toast } from "sonner";
+import { PostActionsDropdownMenu } from "@/app/(commonLayout)/my-feed/_components/PostActionsDropDown";
 
 const PostCard = ({
   postData,
@@ -81,27 +83,29 @@ const PostCard = ({
       <Card>
         <CardHeader>
           <CardTitle>
-            <div className="flex items-center ">
-              <Image
-                src={postData?.author?.profileImage}
-                alt="Author"
-                width={50}
-                height={50}
-                className="rounded-full border border-gray-300"
-              />
-              <div className="flex items-start">
-                <div className="flex flex-col">
-                  <h1 className=" text-md font-bold px-4 text-gray-700 hover:underline cursor-pointer">
-                    {postData?.author?.name}
-                  </h1>
-                  <span className="text-sm text-gray-500 px-4 pt-1">
-                    {formatDate(postData?.createdAt)}
-                  </span>
+            <div className="flex items-center justify-between ">
+              <div className="flex items-center gap-x-1">
+                <Image
+                  src={postData?.author?.profileImage}
+                  alt="Author"
+                  width={50}
+                  height={50}
+                  className="rounded-full border border-gray-300"
+                />
+                <div className="flex items-start">
+                  <div className="flex flex-col">
+                    <h1 className=" text-md font-bold px-4 text-gray-700 hover:underline cursor-pointer">
+                      {postData?.author?.name}
+                    </h1>
+                    <span className="text-sm text-gray-500 px-4 pt-1">
+                      {formatDate(postData?.createdAt)}
+                    </span>
+                  </div>
+                  {postData?.author?.isVerified == true && (
+                    <VerifiedLogo wi={15} he={15} />
+                  )}
+                  {postData?.isPremium && <PremiumContentMark />}
                 </div>
-                {postData?.author?.isVerified == true && (
-                  <VerifiedLogo wi={15} he={15} />
-                )}
-                {postData?.isPremium && <PremiumContentMark />}
               </div>
               {/* @ts-expect-error */}
               {user?.id !== postData?.author?._id && (
@@ -110,6 +114,9 @@ const PostCard = ({
                     <Heart fill={isFavorite ? "currentColor" : "none"} />
                   </Button>
                 </div>
+              )}
+              {user?.id === postData?.author?._id && (
+                <PostActionsDropdownMenu postId={postData._id} />
               )}
             </div>
           </CardTitle>
