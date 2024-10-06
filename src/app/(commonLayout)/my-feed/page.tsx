@@ -149,27 +149,34 @@ const MyFeed = () => {
               size={20}
             />
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                {selectedCategory || "All Categories"}{" "}
-                <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => setSelectedCategory(null)}>
-                All Categories
-              </DropdownMenuItem>
-              {categories.map((category) => (
+          <div className="flex  items-center gap-2">
+            <h2 className="text-sm font-semibold">Filter by</h2>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  {selectedCategory || "All Categories"}{" "}
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
                 <DropdownMenuItem
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
+                  onClick={() => setSelectedCategory(null)}
+                  className="cursor-pointer"
                 >
-                  {category}
+                  All Categories
                 </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                {categories.map((category) => (
+                  <DropdownMenuItem
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className="cursor-pointer"
+                  >
+                    {category}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
         {!posts && !error ? (
           <PostCardSkeleton />
