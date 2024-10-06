@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useOptimistic } from "react";
 import { useRouter } from "next/navigation";
+import PostEditDialog from "./PostEditDialog";
 
 import PremiumContentMark from "./PremiumContentMark";
 import { favoritePost } from "@/service/favouritePost";
@@ -34,11 +35,17 @@ const PostCard = ({
   onVote,
   onAddComment,
   onCommentDeleted,
+  onCommentEdited,
 }: {
   postData: any;
   onVote: (postId: string, voteType: "upvote" | "downvote") => Promise<void>;
   onAddComment: (postId: string, content: string) => Promise<void>;
   onCommentDeleted: (postId: string, commentId: string) => void;
+  onCommentEdited: (
+    postId: string,
+    commentId: string,
+    newContent: string
+  ) => void;
 }) => {
   const [showComments, setShowComments] = useState(false);
   const [showCommentInput, setShowCommentInput] = useState(false);
@@ -133,6 +140,18 @@ const PostCard = ({
       onCommentDeleted(postData._id, commentId);
     },
     [addOptimisticComment, onCommentDeleted, postData._id]
+  );
+
+  const handleCommentEdited = useCallback(
+    (commentId: string, newContent: string) => {
+      addOptimisticComment((comments) =>
+        comments.map((c) =>
+          c._id === commentId ? { ...c, content: newContent } : c
+        )
+      );
+      onCommentEdited(postData._id, commentId, newContent);
+    },
+    [addOptimisticComment, onCommentEdited, postData._id]
   );
 
   return (
@@ -235,8 +254,9 @@ const PostCard = ({
                 <Button
                   onClick={handleAddComment}
                   disabled={isPending || isAddingComment}
+                  className="bg-green-600 hover:bg-green-600/90"
                 >
-                  {isPending || isAddingComment ? "Submitting..." : "Submit"}
+                  {isPending || isAddingComment ? "Adding..." : "Add Comment"}
                 </Button>
               </div>
             )}
@@ -248,6 +268,7 @@ const PostCard = ({
                     comment={comment}
                     postData={postData}
                     onCommentDeleted={handleCommentDeleted}
+                    onCommentEdited={handleCommentEdited}
                   />
                 ))}
               </div>
@@ -273,10 +294,12 @@ const CommentItem = ({
   comment,
   postData,
   onCommentDeleted,
+  onCommentEdited,
 }: {
   comment: any;
   postData: any;
   onCommentDeleted: (commentId: string) => void;
+  onCommentEdited: (commentId: string, newContent: string) => void;
 }) => (
   <div className="bg-gray-100/60 p-3 rounded-md mb-2">
     <div className="flex justify-between items-center gap-x-2">
@@ -296,9 +319,11 @@ const CommentItem = ({
       </div>
       {user?.id === comment?.commentator?._id && (
         <CommentActionsDropdownMenu
+          comment={comment}
           commentId={comment._id}
           postId={postData._id}
           onCommentDeleted={() => onCommentDeleted(comment._id)}
+          onCommentEdited={onCommentEdited}
         />
       )}
     </div>

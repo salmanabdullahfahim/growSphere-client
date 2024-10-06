@@ -18,15 +18,20 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { deleteComment } from "@/service/deleteComment";
+import PostEditDialog from "@/components/Post/PostEditDialog";
 
 export function CommentActionsDropdownMenu({
   postId,
+  comment,
   commentId,
   onCommentDeleted,
+  onCommentEdited,
 }: {
   postId: string;
   commentId: string;
+  comment: any;
   onCommentDeleted: (commentId: string) => void;
+  onCommentEdited: (commentId: string, newContent: string) => void;
 }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
@@ -54,21 +59,25 @@ export function CommentActionsDropdownMenu({
       <DropdownMenuTrigger asChild>
         <EllipsisVertical className="cursor-pointer" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent
+        className="w-56"
+        onClick={(e) => e.stopPropagation()}
+      >
         <DropdownMenuLabel>Comment Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <h1>Edit Comment</h1>
-          </DropdownMenuItem>
+          <PostEditDialog
+            comment={comment}
+            postId={postId}
+            onCommentEdited={onCommentEdited}
+          />
           <DropdownMenuItem
-            className="text-red-500 cursor-pointer"
+            className="hover:text-red-500 font-semibold cursor-pointer"
             onClick={handleDeleteComment}
             disabled={isDeleting}
           >
-            <Trash2 className="mr-2 w-5 h-5" />
+            <Trash2 className="mr-2 w-4 h-4 ml-2" />
             {isDeleting ? "Deleting..." : "Delete Comment"}
-            <DropdownMenuShortcut>⇧⌘C</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

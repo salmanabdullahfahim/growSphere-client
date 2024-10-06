@@ -13,6 +13,7 @@ import { extractClientUser } from "@/utils/extractClientuser";
 import { getAllPosts } from "@/service/getAllPosts";
 import { toast } from "sonner";
 import { addComment } from "@/service/addComment";
+import { editComment } from "@/service/editComment";
 
 const MyFeed = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -80,6 +81,32 @@ const MyFeed = () => {
     [mutate]
   );
 
+  const handleCommentEdited = useCallback(
+    (postId: string, commentId: string, newContent: string) => {
+      mutate(
+        (currentData) => {
+          if (!currentData) return currentData;
+          return {
+            ...currentData,
+            data: currentData.data.map((post) => {
+              if (post._id === postId) {
+                return {
+                  ...post,
+                  comments: post.comments.map((c) =>
+                    c._id === commentId ? { ...c, content: newContent } : c
+                  ),
+                };
+              }
+              return post;
+            }),
+          };
+        },
+        false // Set to false to avoid revalidation immediately
+      );
+    },
+    [mutate]
+  );
+
   return (
     <div className="w-full flex gap-x-7">
       {/* left */}
@@ -116,6 +143,7 @@ const MyFeed = () => {
               onVote={handleVote}
               onAddComment={handleAddComment}
               onCommentDeleted={handleCommentDeleted}
+              onCommentEdited={handleCommentEdited}
             />
           ))
         ) : (
