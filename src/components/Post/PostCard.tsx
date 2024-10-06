@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import React, { useCallback, useState, useTransition } from "react";
+import React, { useCallback, useRef, useState, useTransition } from "react";
 import {
   Card,
   CardContent,
@@ -14,7 +14,13 @@ import Image from "next/image";
 import VerifiedLogo from "../UserProfile/VerifiedLogo";
 import { formatDate } from "@/utils/FormatDate";
 import { Button } from "../ui/button";
-import { ChevronDown, ChevronUp, Heart, MessageSquare } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Download,
+  Heart,
+  MessageSquare,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useOptimistic } from "react";
@@ -28,6 +34,8 @@ import { toast } from "sonner";
 import { PostActionsDropdownMenu } from "@/app/(commonLayout)/my-feed/_components/PostActionsDropDown";
 import { addComment } from "@/service/addComment";
 import { CommentActionsDropdownMenu } from "@/app/(commonLayout)/my-feed/_components/CommentActionDropDown";
+
+import { useReactToPrint } from "react-to-print";
 
 const user = extractClientUser();
 const PostCard = ({
@@ -61,6 +69,33 @@ const PostCard = ({
   );
 
   const router = useRouter();
+
+  const componentRef = useRef<HTMLDivElement | null>(null);
+
+  const handlePrint = useReactToPrint({
+    content: () => {
+      if (!componentRef.current) {
+        console.error("No content to print");
+        return null;
+      }
+      return componentRef.current;
+    },
+    onBeforeGetContent: () => {
+      if (!componentRef.current) {
+        console.error("No content to print before getting content");
+        return Promise.reject("No content to print");
+      }
+      return Promise.resolve();
+    },
+    onPrintError: (error) => {
+      console.error("Print failed", error);
+      toast.error("Print failed. Please try again.");
+    },
+    onAfterPrint: () => {
+      console.log("After print");
+      toast.success("Printed successfully");
+    },
+  });
 
   const handleAddComment = async () => {
     if (!commentContent.trim() || !user) return;
@@ -155,7 +190,7 @@ const PostCard = ({
   );
 
   return (
-    <div>
+    <div ref={componentRef}>
       <Card>
         <CardHeader>
           <CardTitle>
@@ -229,7 +264,7 @@ const PostCard = ({
                   <ChevronDown />
                 </Button>
               </div>
-              <div>
+              <div className="flex gap-x-2">
                 <Button
                   variant="outline"
                   onClick={() => {
@@ -239,6 +274,20 @@ const PostCard = ({
                 >
                   <MessageSquare className="mr-2" />
                   Comment ({postData?.comments?.length || 0})
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (componentRef.current) {
+                      handlePrint();
+                    } else {
+                      console.error("No content to print");
+                      toast.error("Unable to print. Please try again.");
+                    }
+                  }}
+                >
+                  <Download className="mr-2 w-4 h-4" />
                 </Button>
               </div>
             </div>

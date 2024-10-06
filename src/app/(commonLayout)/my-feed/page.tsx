@@ -1,32 +1,51 @@
 // @ts-nocheck
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
+
 import useSWR from "swr";
-import PostCard from "@/components/Post/PostCard";
-import { Search } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import InspiringQuotesCard from "./_components/InspiringQuotesCard";
+import { votePost } from "@/service/vote";
+import { addComment } from "@/service/addComment";
+import { PostCardSkeleton } from "./_components/PostCardSkeleton";
+import PostCard from "@/components/Post/PostCard";
 import TrendingCard from "./_components/TrendingCard";
 import { useDebounce } from "@/hooks/debounce";
-import { PostCardSkeleton } from "./_components/PostCardSkeleton";
-import { votePost } from "@/service/vote";
-import { extractClientUser } from "@/utils/extractClientuser";
 import { getAllPosts } from "@/service/getAllPosts";
 import { toast } from "sonner";
-import { addComment } from "@/service/addComment";
-import { editComment } from "@/service/editComment";
+import { extractClientUser } from "@/utils/extractClientuser";
 
 const MyFeed = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
   const user = extractClientUser();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const {
     data: posts,
     error,
     mutate,
-  } = useSWR([`/post`, debouncedSearchTerm], () =>
-    getAllPosts(debouncedSearchTerm)
+  } = useSWR(
+    [`/posts`, searchTerm, selectedCategory],
+    () => getAllPosts(searchTerm, selectedCategory),
+    { revalidateOnFocus: false }
   );
+
+  const categories = useMemo(() => {
+    if (!posts || !posts.data) return [];
+    const uniqueCategories = new Set(
+      posts.data.map((post: any) => post.category)
+    );
+    return Array.from(uniqueCategories);
+  }, [posts]);
 
   const handleVote = useCallback(
     async (postId: string, voteType: "upvote" | "downvote") => {
@@ -116,18 +135,41 @@ const MyFeed = () => {
         </div>
       </div>
       <div className="w-full md:w-2/5 mx-auto flex flex-col gap-4 mt-8 px-3 md:px-0">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-full px-4 py-2 border rounded-lg border-gray-300 pl-10"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Search
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            size={20}
-          />
+        <div className="flex gap-4">
+          <div className="relative flex-grow">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full px-4 py-2 border rounded-lg border-gray-300 pl-10"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Search
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
+            />
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                {selectedCategory || "All Categories"}{" "}
+                <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => setSelectedCategory(null)}>
+                All Categories
+              </DropdownMenuItem>
+              {categories.map((category) => (
+                <DropdownMenuItem
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  {category}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         {!posts && !error ? (
           <PostCardSkeleton />
