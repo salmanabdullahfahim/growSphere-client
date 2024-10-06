@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useCallback, useState, useTransition } from "react";
 import {
   Card,
   CardContent,
@@ -18,6 +18,7 @@ import { ChevronDown, ChevronUp, Heart, MessageSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useOptimistic } from "react";
+import { useRouter } from "next/navigation";
 
 import PremiumContentMark from "./PremiumContentMark";
 import { favoritePost } from "@/service/favouritePost";
@@ -25,15 +26,19 @@ import { extractClientUser } from "@/utils/extractClientuser";
 import { toast } from "sonner";
 import { PostActionsDropdownMenu } from "@/app/(commonLayout)/my-feed/_components/PostActionsDropDown";
 import { addComment } from "@/service/addComment";
+import { CommentActionsDropdownMenu } from "@/app/(commonLayout)/my-feed/_components/CommentActionDropDown";
 
+const user = extractClientUser();
 const PostCard = ({
   postData,
   onVote,
   onAddComment,
+  onCommentDeleted,
 }: {
   postData: any;
   onVote: (postId: string, voteType: "upvote" | "downvote") => Promise<void>;
   onAddComment: (postId: string, content: string) => Promise<void>;
+  onCommentDeleted: (postId: string, commentId: string) => void;
 }) => {
   const [showComments, setShowComments] = useState(false);
   const [showCommentInput, setShowCommentInput] = useState(false);
@@ -43,12 +48,12 @@ const PostCard = ({
   const [isPending, startTransition] = useTransition();
   const [isAddingComment, setIsAddingComment] = useState(false);
 
-  const user = extractClientUser();
-
   const [optimisticComments, addOptimisticComment] = useOptimistic(
     postData.comments,
     (state, newComment) => [...state, newComment]
   );
+
+  const router = useRouter();
 
   const handleAddComment = async () => {
     if (!commentContent.trim() || !user) return;
@@ -119,6 +124,16 @@ const PostCard = ({
       toast.error("Error favoriting post");
     }
   };
+
+  const handleCommentDeleted = useCallback(
+    (commentId: string) => {
+      addOptimisticComment((comments) =>
+        comments.filter((c) => c._id !== commentId)
+      );
+      onCommentDeleted(postData._id, commentId);
+    },
+    [addOptimisticComment, onCommentDeleted, postData._id]
+  );
 
   return (
     <div>
@@ -228,7 +243,12 @@ const PostCard = ({
             {showComments && (
               <div className="mt-4">
                 {optimisticComments.map((comment, index) => (
-                  <CommentItem key={comment._id || index} comment={comment} />
+                  <CommentItem
+                    key={comment._id || index}
+                    comment={comment}
+                    postData={postData}
+                    onCommentDeleted={handleCommentDeleted}
+                  />
                 ))}
               </div>
             )}
@@ -249,21 +269,38 @@ const CommentSkeleton = () => (
   </div>
 );
 
-const CommentItem = ({ comment }: { comment: any }) => (
+const CommentItem = ({
+  comment,
+  postData,
+  onCommentDeleted,
+}: {
+  comment: any;
+  postData: any;
+  onCommentDeleted: (commentId: string) => void;
+}) => (
   <div className="bg-gray-100/60 p-3 rounded-md mb-2">
-    <div className="flex items-center gap-x-2">
-      {comment.commentator?.profileImage && (
-        <Image
-          src={comment.commentator.profileImage}
-          alt="Commentator"
-          width={32}
-          height={32}
-          className="rounded-full border border-gray-300"
+    <div className="flex justify-between items-center gap-x-2">
+      <div className="flex items-center gap-x-2">
+        {comment.commentator?.profileImage && (
+          <Image
+            src={comment.commentator.profileImage}
+            alt="Commentator"
+            width={32}
+            height={32}
+            className="rounded-full border border-gray-300"
+          />
+        )}
+        <div>
+          <p className="font-semibold">{comment.commentator?.name}</p>
+        </div>
+      </div>
+      {user?.id === comment?.commentator?._id && (
+        <CommentActionsDropdownMenu
+          commentId={comment._id}
+          postId={postData._id}
+          onCommentDeleted={() => onCommentDeleted(comment._id)}
         />
       )}
-      <div>
-        <p className="font-semibold">{comment.commentator?.name}</p>
-      </div>
     </div>
     <p className="pl-10 text-sm bg-gray-200/50 rounded-md p-1 mt-2">
       {comment.content}

@@ -53,7 +53,31 @@ const MyFeed = () => {
         toast.error("Failed to add comment");
       }
     },
-    [user.id, mutate]
+    [user?.id, mutate]
+  );
+
+  const handleCommentDeleted = useCallback(
+    (postId: string, commentId: string) => {
+      mutate(
+        (currentData) => {
+          if (!currentData) return currentData;
+          return {
+            ...currentData,
+            data: currentData.data.map((post) => {
+              if (post._id === postId) {
+                return {
+                  ...post,
+                  comments: post.comments.filter((c) => c._id !== commentId),
+                };
+              }
+              return post;
+            }),
+          };
+        },
+        false // Set to false to avoid revalidation immediately
+      );
+    },
+    [mutate]
   );
 
   return (
@@ -91,6 +115,7 @@ const MyFeed = () => {
               postData={post}
               onVote={handleVote}
               onAddComment={handleAddComment}
+              onCommentDeleted={handleCommentDeleted}
             />
           ))
         ) : (
