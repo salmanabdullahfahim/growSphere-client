@@ -189,6 +189,14 @@ const PostCard = ({
     [addOptimisticComment, onCommentEdited, postData._id]
   );
 
+  const handleAuthorClick = () => {
+    if (user?.id === postData.author._id) {
+      router.push("/my-profile");
+    } else {
+      router.push(`/user/${postData.author._id}`);
+    }
+  };
+
   return (
     <div ref={componentRef}>
       <Card>
@@ -205,7 +213,10 @@ const PostCard = ({
                 />
                 <div className="flex items-start">
                   <div className="flex flex-col">
-                    <h1 className=" text-md font-bold px-4 text-gray-700 hover:underline cursor-pointer">
+                    <h1
+                      className="text-md font-bold px-4 text-gray-700 hover:underline cursor-pointer"
+                      onClick={handleAuthorClick}
+                    >
                       {postData?.author?.name}
                     </h1>
                     <span className="text-sm text-gray-500 px-4 pt-1">
