@@ -43,7 +43,7 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
               isFollowing={userData?.followers.some(
                 (follower: any) => follower._id === extractedUser.id
               )}
-              userId={userData?._id}
+              followingId={userData?._id}
             />
           </div>
         </div>
