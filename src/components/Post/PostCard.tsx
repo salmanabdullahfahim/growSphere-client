@@ -209,7 +209,8 @@ const PostCard = ({
                   alt="Author"
                   width={50}
                   height={50}
-                  className="rounded-full border border-gray-300"
+                  onClick={handleAuthorClick}
+                  className="rounded-full border border-gray-300 cursor-pointer"
                 />
                 <div className="flex items-start">
                   <div className="flex flex-col">
