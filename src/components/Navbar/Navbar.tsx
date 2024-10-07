@@ -84,7 +84,7 @@ const Navbar = () => {
         <ProfileDropDown />
       ) : (
         <Link href="/signin" className="ml-14">
-          <div className="flex justify-center items-center bg-green-500 hover:bg-green-500/90 text-slate-100 hover:text-white rounded-full px-2 md:px-4 py-1.5 border-[1px] text-[12px] md:text-lg text-nowrap  duration-200 cursor-pointer relative">
+          <div className="flex justify-center items-center bg-green-600 hover:bg-green-600/90 text-slate-100 hover:text-white rounded-full px-2 md:px-4 py-1.5 border-[1px] text-[12px] md:text-lg text-nowrap  duration-200 cursor-pointer relative font-semibold">
             Sign In
           </div>
         </Link>
