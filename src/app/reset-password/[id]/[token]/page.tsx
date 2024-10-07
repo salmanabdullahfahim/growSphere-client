@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Logo from "@/components/Navbar/Logo";
+import { useRouter } from "next/navigation";
+import { resetPassword } from "@/service/resetPassword";
 
 const ResetPassword = ({
   params,
@@ -13,9 +15,11 @@ const ResetPassword = ({
   params: { id: string; token: string };
 }) => {
   const { id, token } = params;
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,10 +31,21 @@ const ResetPassword = ({
       return;
     }
 
-    // Add your password reset logic here
-    // ...
-
-    setIsLoading(false);
+    try {
+      const result = await resetPassword(id, token, password);
+      if (result.success) {
+        toast.success("Password reset successful, please sign in");
+        router.push("/signin");
+      } else {
+        toast.error(
+          result.error || "An error occurred while resetting your password"
+        );
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
