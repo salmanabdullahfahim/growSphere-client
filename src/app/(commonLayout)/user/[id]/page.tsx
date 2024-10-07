@@ -1,5 +1,6 @@
 // @ts-nocheck
 import FollowButton from "@/components/UserProfile/FollowButton";
+import InfoCard from "@/components/UserProfile/InfoCard";
 import { getUserById } from "@/service/getUserById";
 import { extractUser } from "@/utils/extractUser";
 import Image from "next/image";
@@ -46,6 +47,9 @@ const UserPage = async ({ params }: { params: { id: string } }) => {
               followingId={userData?._id}
             />
           </div>
+        </div>
+        <div>
+          <InfoCard user={userData} />
         </div>
       </div>
     </div>
