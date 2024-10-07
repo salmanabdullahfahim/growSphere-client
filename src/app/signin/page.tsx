@@ -27,56 +27,67 @@ const SignInForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-12">
-      <div className="w-full relative mb-6">
-        <input
-          type="email"
-          className="bg-transparent border-b border-black focus:outline-none focus:border-green-600 text-sm w-full py-2"
-          placeholder="Email Address"
-          {...register("email", {
-            required: "Email is required",
-            pattern: /^\S+@\S+$/i,
-          })}
-        />
-        <Mail
-          className="absolute top-1/2 -translate-y-1/2 right-2 opacity-80"
-          size={18}
-        />
-        {errors.email && (
-          <span className="text-red-500 text-xs">
-            {errors.email.message?.toString() ?? ""}
-          </span>
-        )}
-      </div>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-12">
+        <div className="w-full relative mb-6">
+          <input
+            type="email"
+            className="bg-transparent border-b border-black focus:outline-none focus:border-green-600 text-sm w-full py-2"
+            placeholder="Email Address"
+            {...register("email", {
+              required: "Email is required",
+              pattern: /^\S+@\S+$/i,
+            })}
+          />
+          <Mail
+            className="absolute top-1/2 -translate-y-1/2 right-2 opacity-80"
+            size={18}
+          />
+          {errors.email && (
+            <span className="text-red-500 text-xs">
+              {errors.email.message?.toString() ?? ""}
+            </span>
+          )}
+        </div>
 
-      <div className="w-full relative mb-6">
-        <input
-          type="password"
-          className="bg-transparent border-b border-black focus:outline-none focus:border-green-600 text-sm w-full py-2"
-          placeholder="Password"
-          {...register("password", {
-            required: "Password is required",
-            minLength: 6,
-          })}
-        />
-        <Lock
-          className="absolute top-1/2 -translate-y-1/2 right-2 opacity-80"
-          size={18}
-        />
-        {errors.password && (
-          <span className="text-red-500 text-xs">
-            {errors.password.message?.toString()}
-          </span>
-        )}
-      </div>
+        <div className="w-full relative mb-2">
+          <input
+            type="password"
+            className="bg-transparent border-b border-black focus:outline-none focus:border-green-600 text-sm w-full py-2"
+            placeholder="Password"
+            {...register("password", {
+              required: "Password is required",
+              minLength: 6,
+            })}
+          />
+          <Lock
+            className="absolute top-1/2 -translate-y-1/2 right-2 opacity-80"
+            size={18}
+          />
+          {errors.password && (
+            <span className="text-red-500 text-xs">
+              {errors.password.message?.toString()}
+            </span>
+          )}
+        </div>
 
-      <button
-        type="submit"
-        className="bg-green-500 py-4 px-10 text-white hover:bg-opacity-95 duration-300 mt-4 flex items-center rounded-md font-semibold"
-      >
-        Sign In <ArrowRight className="ml-2" size={18} />
-      </button>
-    </form>
+        <div className="flex justify-end text-sm mt-2 mb-4">
+          <Link
+            href="/forget-password"
+            className="hover:underline hover:text-green-600 duration-300"
+          >
+            Forget Password?
+          </Link>
+        </div>
+
+        <button
+          type="submit"
+          className="bg-green-500 py-4 px-10 text-white hover:bg-opacity-95 duration-300 mt-4 flex items-center rounded-md font-semibold"
+        >
+          Sign In <ArrowRight className="ml-2" size={18} />
+        </button>
+      </form>
+    </>
   );
 };
 

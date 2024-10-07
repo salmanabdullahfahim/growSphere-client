@@ -8,7 +8,17 @@ export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   // Public routes
-  const publicRoutes = ["/signin", "/signup", "/about-us", "/contact-us", "/"];
+  const publicRoutes = [
+    "/signin",
+    "/signup",
+    "/about-us",
+    "/contact-us",
+    "/forget-password",
+    "/",
+  ];
+  if (publicRoutes.includes(path) || path.startsWith("/reset-password/")) {
+    return NextResponse.next();
+  }
   if (publicRoutes.includes(path)) {
     return NextResponse.next();
   }
