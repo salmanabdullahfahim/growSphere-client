@@ -41,7 +41,7 @@ const ResetPassword = ({
       <div className="flex-grow flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="p-8">
-            <h2 className="text-2xl font-bold text-center mb-6">
+            <h2 className="text-2xl font-semibold text-center mb-6">
               Reset Password
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -57,7 +57,11 @@ const ResetPassword = ({
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button
+                type="submit"
+                className="w-full text-white bg-green-600 hover:bg-green-600/90 "
+                disabled={isLoading}
+              >
                 {isLoading ? "Resetting..." : "Reset Password"}
               </Button>
             </form>
