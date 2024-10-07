@@ -4,7 +4,7 @@ import { Iphone15ProDemo } from "./PhoneDemo";
 
 const Features = () => {
   return (
-    <div className="mb-6">
+    <div className="mb-6 pt-9">
       <div>
         <h2 className="text-3xl md:text-[45px] text-gray-700 font-bold text-center mb-4">
           Features of GrowSphere
