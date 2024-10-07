@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
     "/forget-password",
     "/",
   ];
-  if (publicRoutes.includes(path) || path.startsWith("/reset-password/")) {
+  if (publicRoutes.includes(path) || path.startsWith("/reset-password")) {
     return NextResponse.next();
   }
   if (publicRoutes.includes(path)) {
