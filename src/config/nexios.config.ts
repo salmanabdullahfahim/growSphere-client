@@ -3,7 +3,7 @@ import { Nexios } from "nexios-http";
 
 const createNexiosInstance = async (isServer: boolean) => {
   const instance = new Nexios({
-    baseURL: "http://localhost:5000/api/v1",
+    baseURL: "https://growsphere-server.vercel.app/api/v1",
     headers: {
       "Content-Type": "application/json",
     },

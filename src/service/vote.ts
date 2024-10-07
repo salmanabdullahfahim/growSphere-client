@@ -13,8 +13,6 @@ export async function votePost(
     // Get the server-side Nexios instance
     const nexios = await getServerNexiosInstance();
 
-    console.log(postId, voteType, userId);
-
     // Make API request using Nexios
     const response = await nexios.post(
       `/post/${postId}/vote`,
@@ -25,7 +23,6 @@ export async function votePost(
       { cache: "no-store" }
     );
 
-    console.log(response.data);
     // Return the updated post data
     return response.data;
   } catch (error) {

@@ -13,7 +13,7 @@ export async function editComment(
     const response = await nexios.put(`/post/${postId}/comments/${commentId}`, {
       content,
     });
-    console.log(response.data);
+
     return response.data;
   } catch (error) {
     console.error("Error editing comment:", error);

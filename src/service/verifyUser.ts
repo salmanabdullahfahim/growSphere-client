@@ -7,7 +7,7 @@ export async function verifyUser(userId: string) {
   try {
     // @ts-expect-error
     const response = await serverNexiosInstance.post(`/user/verify/${userId}`);
-    console.log(response);
+
     // @ts-expect-error
     if (response.data.statusCode === 200 && response.data.data.payment_url) {
       // @ts-expect-error

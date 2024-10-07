@@ -10,8 +10,6 @@ export async function favoritePost(postId: string, userId: string) {
       userId,
     });
 
-    console.log(response);
-
     if (response.status === 200) {
       return { success: true, message: "Post favorited successfully" };
     } else {

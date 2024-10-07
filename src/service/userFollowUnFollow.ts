@@ -9,7 +9,6 @@ export async function followUser(userId: string, followingId: string) {
     const response = await nexios.post(`/user/follow/${followingId}`, {
       followerId: userId,
     });
-    console.log(response);
 
     if (response.status !== 200) {
       throw new Error("Failed to follow user");

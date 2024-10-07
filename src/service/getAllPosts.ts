@@ -3,8 +3,6 @@
 import { cookies } from "next/headers";
 
 export const getAllPosts = async (searchTerm?: string, category?: string) => {
-  console.log("searchTerm", searchTerm); // This will help us debug
-  console.log("category", category);
   const accessToken = cookies().get("accessToken");
   const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/post`);
 

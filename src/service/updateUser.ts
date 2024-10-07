@@ -10,7 +10,7 @@ export async function updateUser(userData: any) {
       `/user/updateProfile/${userData._id}`,
       userData
     );
-    console.log(response);
+
     return response.data;
   } catch (error) {
     console.error("Error updating user:", error);
