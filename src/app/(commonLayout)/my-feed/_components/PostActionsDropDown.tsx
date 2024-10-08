@@ -1,5 +1,6 @@
 "use client";
 
+import PostEditDialog from "@/components/Post/PostEditDialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +17,13 @@ import { EllipsisVertical, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export function PostActionsDropdownMenu({ postId }: { postId: string }) {
+export function PostActionsDropdownMenu({
+  post,
+  postId,
+}: {
+  post: any;
+  postId: string;
+}) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDeletePost = async () => {
@@ -39,12 +46,15 @@ export function PostActionsDropdownMenu({ postId }: { postId: string }) {
       <DropdownMenuTrigger asChild>
         <EllipsisVertical className="cursor-pointer" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent
+        className="w-56"
+        onClick={(e) => e.stopPropagation()}
+      >
         <DropdownMenuLabel>Post Options</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
-            <h1>Edit Post</h1>
+            <PostEditDialog post={post} />
           </DropdownMenuItem>
           <DropdownMenuItem
             className="text-red-500 cursor-pointer"

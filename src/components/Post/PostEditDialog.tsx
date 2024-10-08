@@ -1,62 +1,34 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import { editComment } from "@/service/editComment";
 
-const PostEditDialog = ({
-  comment,
-  postId,
-  onCommentEdited,
-}: {
-  comment: any;
-  postId: string;
-  onCommentEdited: (commentId: string, newContent: string) => void;
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [editedContent, setEditedContent] = useState(comment.content);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const PostEditDialog = ({ post }: { post: any }) => {
+  const [open, setOpen] = React.useState(false);
 
   const handleOpenChange = (open: boolean) => {
-    setIsOpen(open);
-    if (open) {
-      setEditedContent(comment.content);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    try {
-      await editComment(postId, comment._id, editedContent);
-      onCommentEdited(comment._id, editedContent);
-      toast.success("Comment updated successfully");
-      setIsOpen(false);
-    } catch (error) {
-      toast.error("Failed to update comment");
-    } finally {
-      setIsSubmitting(false);
-    }
+    setOpen(open);
   };
 
   const handleEditClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsOpen(true);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           variant="ghost"
@@ -64,33 +36,64 @@ const PostEditDialog = ({
           onClick={handleEditClick}
         >
           <span> ✏️</span>
-          Edit Comment
+          Edit Post
         </Button>
       </DialogTrigger>
-      <DialogContent onClick={(e) => e.stopPropagation()}>
+      <DialogContent
+        className="sm:max-w-[425px]"
+        onClick={(e) => e.stopPropagation()}
+        onInteractOutside={handleClose}
+      >
         <DialogHeader>
-          <DialogTitle>Edit Comment</DialogTitle>
-          <DialogDescription>
-            Make changes to your comment below.
-          </DialogDescription>
+          <DialogTitle>Edit Post</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <Textarea
-            value={editedContent}
-            onChange={(e) => setEditedContent(e.target.value)}
-            placeholder="Edit your comment..."
-            className="mb-4"
-          />
-          <div className="flex justify-end gap-2">
-            <Button
-              type="submit"
-              className="bg-green-600 hover:bg-green-600/90"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Updating..." : "Update Comment"}
-            </Button>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <label htmlFor="title" className="text-right">
+              Title
+            </label>
+            <Input
+              id="title"
+              defaultValue={post.title}
+              className="col-span-3"
+            />
           </div>
-        </form>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <label htmlFor="content" className="text-right">
+              Content
+            </label>
+            <Textarea
+              id="content"
+              defaultValue={post.content}
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <label htmlFor="category" className="text-right">
+              Category
+            </label>
+            <Input
+              id="category"
+              defaultValue={post.category}
+              className="col-span-3"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="isPremium"
+              defaultChecked={post.isPremium}
+              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+            />
+            <label
+              htmlFor="isPremium"
+              className="text-sm font-medium text-gray-700"
+            >
+              Premium Post
+            </label>
+          </div>
+        </div>
+        <Button type="submit">Save changes</Button>
       </DialogContent>
     </Dialog>
   );

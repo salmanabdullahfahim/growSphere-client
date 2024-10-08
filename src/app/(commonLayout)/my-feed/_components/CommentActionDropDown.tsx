@@ -18,7 +18,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { deleteComment } from "@/service/deleteComment";
-import PostEditDialog from "@/components/Post/PostEditDialog";
+import CommentEditDialog from "@/components/Post/CommentEditDialog";
 
 export function CommentActionsDropdownMenu({
   postId,
@@ -66,7 +66,7 @@ export function CommentActionsDropdownMenu({
         <DropdownMenuLabel>Comment Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <PostEditDialog
+          <CommentEditDialog
             comment={comment}
             postId={postId}
             onCommentEdited={onCommentEdited}

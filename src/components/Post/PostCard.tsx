@@ -25,7 +25,6 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useOptimistic } from "react";
 import { useRouter } from "next/navigation";
-import PostEditDialog from "./PostEditDialog";
 
 import PremiumContentMark from "./PremiumContentMark";
 import { favoritePost } from "@/service/favouritePost";
@@ -212,7 +211,10 @@ const PostCard = ({
                 </div>
               )}
               {user?.id === postData?.author?._id && (
-                <PostActionsDropdownMenu postId={postData._id} />
+                <PostActionsDropdownMenu
+                  post={postData}
+                  postId={postData._id}
+                />
               )}
             </div>
           </CardTitle>
