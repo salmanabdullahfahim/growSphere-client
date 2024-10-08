@@ -1,10 +1,9 @@
 import PremiumContentMark from "@/components/Post/PremiumContentMark";
-import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -62,22 +61,6 @@ const PostManagementCard = ({ postData }: { postData: any }) => {
             className="rounded-md pt-2"
           />
         </CardContent>
-        <CardFooter>
-          <div className="border-t border-gray-300 flex flex-col w-full py-4">
-            <div className="flex justify-between w-full">
-              <div className="flex gap-x-2">
-                <Button variant="outline">
-                  {postData.upVotes}
-                  <ChevronUp />
-                </Button>
-                <Button variant="outline">
-                  {postData.downVotes}
-                  <ChevronDown />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </CardFooter>
       </Card>
     </div>
   );
