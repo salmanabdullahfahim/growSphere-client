@@ -35,6 +35,7 @@ import { addComment } from "@/service/addComment";
 import { CommentActionsDropdownMenu } from "@/app/(commonLayout)/my-feed/_components/CommentActionDropDown";
 
 import { useReactToPrint } from "react-to-print";
+import Link from "next/link";
 
 const user = extractClientUser();
 const PostCard = ({
@@ -43,6 +44,7 @@ const PostCard = ({
   onAddComment,
   onCommentDeleted,
   onCommentEdited,
+  isUserVerified,
 }: {
   postData: any;
   onVote: (postId: string, voteType: "upvote" | "downvote") => Promise<void>;
@@ -53,6 +55,7 @@ const PostCard = ({
     commentId: string,
     newContent: string
   ) => void;
+  isUserVerified: boolean;
 }) => {
   const [showComments, setShowComments] = useState(false);
   const [showCommentInput, setShowCommentInput] = useState(false);
@@ -103,22 +106,38 @@ const PostCard = ({
   const renderContent = () => {
     if (!postData?.content) return null;
 
+    if (
+      postData.isPremium &&
+      !isUserVerified &&
+      user?.id !== postData.author._id
+    ) {
+      return (
+        <div className="bg-yellow-50 p-4 rounded-md mt-2">
+          <p>
+            This is premium content. Please{" "}
+            <Link href="/my-profile" className="text-blue-500 hover:underline">
+              verify your account
+            </Link>{" "}
+            to view.
+          </p>
+        </div>
+      );
+    }
+
     if (postData.content.length <= MAX_CONTENT_LENGTH || showFullContent) {
-      return <p>{postData.content}</p>;
+      return <p className="py-2 px-2">{postData.content}</p>;
     }
 
     return (
-      <>
-        <p className="py-2 px-2">
-          {postData.content.slice(0, MAX_CONTENT_LENGTH)}...{" "}
-          <span
-            className="text-gray-700 cursor-pointer hover:underline"
-            onClick={() => setShowFullContent(true)}
-          >
-            See more
-          </span>
-        </p>
-      </>
+      <p className="">
+        {postData.content.slice(0, MAX_CONTENT_LENGTH)}...{" "}
+        <span
+          className="text-gray-700 cursor-pointer hover:underline"
+          onClick={() => setShowFullContent(true)}
+        >
+          See more
+        </span>
+      </p>
     );
   };
 
@@ -224,13 +243,18 @@ const PostCard = ({
         </CardHeader>
         <CardContent>
           {renderContent()}
-          <Image
-            src={postData?.images[0]}
-            alt="Post"
-            width={500}
-            height={500}
-            className="rounded-md pt-2"
-          />
+          {(!postData.isPremium ||
+            isUserVerified ||
+            user?.id === postData.author._id) &&
+            postData?.images[0] && (
+              <Image
+                src={postData.images[0]}
+                alt="Post"
+                width={500}
+                height={500}
+                className="rounded-md pt-2"
+              />
+            )}
         </CardContent>
         <CardFooter>
           <div className="border-t border-gray-300 flex flex-col w-full py-4">

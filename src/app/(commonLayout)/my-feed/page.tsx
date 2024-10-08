@@ -193,6 +193,7 @@ const MyFeed = () => {
               onAddComment={handleAddComment}
               onCommentDeleted={handleCommentDeleted}
               onCommentEdited={handleCommentEdited}
+              isUserVerified={user?.isVerified}
             />
           ))
         ) : (
