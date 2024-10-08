@@ -7,7 +7,9 @@ export async function updatePost(postId: string, postData: any) {
   const nexios = await getServerNexiosInstance();
 
   try {
-    const response = await nexios.put(`/post/update-post/${postId}`, postData);
+    const response = await nexios.put(`/post/update-post/${postId}`, postData, {
+      cache: "no-store",
+    });
     revalidatePath("/dashboard/post-management");
     revalidatePath("/my-profile");
     revalidatePath("/my-feed");
