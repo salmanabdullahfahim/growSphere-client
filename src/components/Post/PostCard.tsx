@@ -70,33 +70,6 @@ const PostCard = ({
 
   const router = useRouter();
 
-  const componentRef = useRef<HTMLDivElement | null>(null);
-
-  const handlePrint = useReactToPrint({
-    content: () => {
-      if (!componentRef.current) {
-        console.error("No content to print");
-        return null;
-      }
-      return componentRef.current;
-    },
-    onBeforeGetContent: () => {
-      if (!componentRef.current) {
-        console.error("No content to print before getting content");
-        return Promise.reject("No content to print");
-      }
-      return Promise.resolve();
-    },
-    onPrintError: (error) => {
-      console.error("Print failed", error);
-      toast.error("Print failed. Please try again.");
-    },
-    onAfterPrint: () => {
-      console.log("After print");
-      toast.success("Printed successfully");
-    },
-  });
-
   const handleAddComment = async () => {
     if (!commentContent.trim() || !user) return;
 
@@ -198,7 +171,7 @@ const PostCard = ({
   };
 
   return (
-    <div ref={componentRef}>
+    <div>
       <Card>
         <CardHeader>
           <CardTitle>
@@ -286,20 +259,6 @@ const PostCard = ({
                 >
                   <MessageSquare className="mr-2" />
                   Comment ({postData?.comments?.length || 0})
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (componentRef.current) {
-                      handlePrint();
-                    } else {
-                      console.error("No content to print");
-                      toast.error("Unable to print. Please try again.");
-                    }
-                  }}
-                >
-                  <Download className="mr-2 w-4 h-4" />
                 </Button>
               </div>
             </div>
