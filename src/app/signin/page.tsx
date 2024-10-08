@@ -22,7 +22,7 @@ const SignInForm = () => {
   const onSubmit = async (data: SignInUser) => {
     const success = await signInService(data);
     if (success) {
-      router.push("/"); // Navigate to the home page after successful login
+      window.location.href = "/";
     }
   };
 
